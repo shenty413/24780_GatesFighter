@@ -3,8 +3,9 @@
 #include <time.h>
 #include "fssimplewindow.h"
 
-// #include "game-class.h"
 #include "game-menu.h"
+#include "game.h"
+
 
 
 int main(void)
@@ -36,11 +37,18 @@ int main(void)
 				if(FSKEY_Y==menu.key)
 				{
 					printf("Player 2 has chosen %d\n", character2);
-					// Game game;
-					// game.Run();
+                    Game game;
+                    game.SetCharacter(character1, character2); // Set choosen character
+                    game.Run(); // Start Game
+                    if (game.finish){
+                        break;
+                    }
 				}
 			}
 		}
+        
+        
+        
 	}
 
 	return 0;

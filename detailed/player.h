@@ -1,5 +1,5 @@
-#ifndef GAME_CLASS_IS_INCLUDED
-#define GAME_CLASS_IS_INCLUDED
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
 
 void DrawPlayer(int x,int y);
 
@@ -11,6 +11,8 @@ protected:
 
 public:
 	Player(); // initialize a player
+    
+    void SetCharacter(int charNo);
 
 	/* The following functions are getters of this class. */
 	const int getAttack();
@@ -45,34 +47,5 @@ public:
 
 	void Draw();
 };
-
-class Arm
-{
-// protected:
-// 	int xa,ya,xh,yh // albow, hand
-public:
-	void Draw(void);
-};
-
-class Leg
-{
-// protected:
-// 	int x1,y1,x2,y2
-public:
-	void Draw(void);
-};
-
-class Game
-{
-public:
-	void Run(void);
-};
-
-// class Background
-// {
-// public:
-// 	void Blood(void);
-// 	void Timer(void);
-// };
 
 #endif

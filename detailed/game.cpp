@@ -1,9 +1,12 @@
-//
-//  game.cpp
-//  GatesFighter_Xcode
-//
-//  Created by 张文远 on 19/11/2017.
-//  Copyright © 2017 A1anzvvy. All rights reserved.
-//
+#include "game.h"
 
-#include "game.hpp"
+void Game::SetCharacter(int pn1, int pn2){
+    p1.SetCharacter(pn1);
+    p2.SetCharacter(pn2);
+}
+
+void Game::Run(){
+    finish = 1;
+    printf("p1 attack: %d\n",p1.getAttack());
+    printf("p2 attack: %d\n",p2.getAttack());
+}
