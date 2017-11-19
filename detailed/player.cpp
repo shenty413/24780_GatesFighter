@@ -16,8 +16,8 @@ Player::Player(){
     x = default_x;
     y = default_y;
     hp = default_hp;
-    attack = default_attack;
-    direction = default_direction;
+    // attack = default_attack;
+    // direction = default_direction;
 }
 
 void Player::SetCharacter(int charNo){
