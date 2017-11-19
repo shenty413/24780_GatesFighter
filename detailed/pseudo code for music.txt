@@ -1,0 +1,97 @@
+#include "fssimplewindow.h"
+#include "yssimplesound.h"
+
+/* include the yssimplesound.cpp */
+
+in the main function 
+
+YsSoundPlayer player;
+
+/* make current and start after open a window */
+player.MakeCurrent();
+player.Start();
+
+/* add a folder reference */
+FsChangeToProgramDir();
+/* load audio files */
+
+/* sound for punching */
+if(YSOK!=propeller.LoadWav("punch.wav") &&
+   YSOK!=propeller.LoadWav("datafiles/punch.wav"))
+{
+    printf("Error!  Cannot load punch.wav!\n");
+}
+/* sound for moving */
+if(YSOK!=notice.LoadWav("move.wav") &&
+   YSOK!=notice.LoadWav("datafiles/move.wav"))
+{
+    printf("Error!  Cannot load notice.wav!\n");
+}
+/* sound for jumping */
+if(YSOK!=notice.LoadWav("jump.wav") &&
+   YSOK!=notice.LoadWav("datafiles/jump.wav"))
+{
+    printf("Error!  Cannot load notice.wav!\n");
+}
+/* sound for bleeding */
+if(YSOK!=notice.LoadWav("bleed.wav") &&
+   YSOK!=notice.LoadWav("datafiles/bleed.wav"))
+{
+    printf("Error!  Cannot load notice.wav!\n");
+}
+    
+/* prompt message */
+printf("Keys:\n");
+printf("  W up_key..........Play a jump\n");
+printf("  A S left right..............play move.\n");
+printf("  SPACE ENTER..............play punch.\n");
+printf("B............play background music");
+printf("E............end background music");
+
+/* decide which sound to play, play once or continuously according to the situation*/
+while game is not over
+	if isPunching returns true:
+		play punch for once;
+	if ispuchned returns true:
+		play bleeding for once;
+	if B is pressed:
+		play backgroundmusic;
+	if E is pressed:
+		end background music;
+	if W or up_key pressed:
+		play jump for once;
+	if A S left_key right_key is pressed:
+		play move until they are released;
+
+/* after the main loop(game over), stop the music */
+		stop background music;
+/* end of the program */
+		return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
