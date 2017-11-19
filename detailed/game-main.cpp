@@ -40,9 +40,22 @@ int main(void)
                     Game game;
                     game.SetCharacter(character1, character2); // Set choosen character
                     game.Run(); // Start Game
-                    if (game.finish){
+					/* 
+						three possible ways of ending a game:
+						1. user presses esc
+						2. time runs out 
+						3. one player k.o. the other 
+						Depending on which way the game ends, different prompts will pop up on the screen. 
+					*/
+                    if (game.isExit()){
                         break;
                     }
+					if (game.isTimeout()) {
+						break;
+					}
+					if (game.isKo()) {
+						break;
+					}
 				}
 			}
 		}
