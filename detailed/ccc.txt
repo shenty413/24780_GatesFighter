@@ -1,0 +1,7 @@
+mkdir -p test.app/Contents/MacOS
+
+clang -c fssimplewindowobjc.m
+
+clang game-main.cpp fssimplewindowcpp.cpp game-class.cpp game-menu.cpp ysglfontdata.cpp fssimplewindowobjc.o -o test.app/Contents/MacOS/exe -framework Cocoa -framework OpenGL -std=c++11 -lstdc++
+
+test.app/Contents/MacOS/exe
