@@ -45,7 +45,7 @@ public:
 	void InitializePunching(void); // initialize a punch
 	bool IsPunching(void); // punchState=1, w1, w2
 	void Punch(void); // change elbowAngle1, elbowAngle2
-	void CheckFinishPunching(void);
+	bool CheckFinishPunching(void);
 
 	/*the following functions describe what happen when a player hit his/her opponent*/
 	bool IfPunchHit(const Player &opponent); // 

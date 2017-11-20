@@ -113,8 +113,8 @@ void Player::Punch(void){
     
 }
 
-void Player::CheckFinishPunching(void){
-    
+bool Player::CheckFinishPunching(void){
+	return true; 
 }
 
 bool Player::IfPunchHit(const Player &opponent){
