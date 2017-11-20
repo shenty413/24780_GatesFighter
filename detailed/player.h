@@ -1,5 +1,8 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
+#include "body.h"
+#include "leg.h"
+#include "arm.h"
 
 void DrawPlayer(int x,int y);
 
@@ -8,7 +11,11 @@ class Player
 protected:
 	int x,y,hp,attack,ay,vx,vy,direction,jumpState,punchState,IsHit;
 	int w1,w2,elbowAngle1,elbowAngle2;
-
+    
+    Arm arm;
+    Leg leg;
+    Body body;
+    
 public:
 	Player(); // initialize a player
     
@@ -27,7 +34,8 @@ public:
 			4. being punched
 	*/
 
-	void Move(void); // change x
+	void Move(int dis); // change x
+    void ChangeDirc(bool dirc);  // change direction
 
 	void InitializeJumping(void); // initialize a jump
 	bool IsJumping(void); // jumpState=1, vy

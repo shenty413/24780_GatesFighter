@@ -32,36 +32,45 @@ void Game::setKo(void) {
 }
 
 void Game::Run(){
-	// wait for a key stroke 
-	FsPollDevice(); 
-	int key = FsInkey();
-	switch (key) {
-	case FSKEY_ESC: // exit the game 
-		setExit();
-		break; 
+	// wait for a key stroke
+    int key, T;
+    bool terminate = 0;
+    while (!terminate){
+        FsPollDevice();
+        key = FsInkey();
+        switch (key) {
+            case FSKEY_ESC: // exit the game
+                setExit();
+                terminate = 1;
+                break;
 	
-	// player 2 moves 
-	case FSKEY_W: // jump 
-		break;
-	case FSKEY_A: // move left 
-		break;
-	case FSKEY_S: // move right 
-		break;
-	case FSKEY_D: // punch 
-		break;
+                // player 2 moves
+            case FSKEY_W: // jump
+                if (!p1.IsJumping()){
+                    //p1.CheckHitGround();
+                    p1.InitializeJumping();
+                    p1.Jump();
+                }
+                break;
+            case FSKEY_A: // move left
+                p1.Move(-20);
+                p1.ChangeDirc(1);
+                break;
+            case FSKEY_S: // move right
+                break;
+            case FSKEY_D: // punch
+                p1.Move(20);
+                p1.ChangeDirc(0);
+                break;
 
-	// player 2 moves 
-	case FSKEY_I: // jump 
-		break;
-	case FSKEY_J: // move left 
-		break;
-	case FSKEY_K: // move right 
-		break; 
-	case FSKEY_L: // punch 
-		break; 
-	default:
-		break; 
-	}
+        }
+        
+        glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+        
+        p1.Draw();
+        FsSwapBuffers();
+        
+    }
     printf("p1 attack: %d\n",p1.getAttack());
     printf("p2 attack: %d\n",p2.getAttack());
 }
