@@ -12,7 +12,7 @@ int main(void)
 {
 	srand((int)time(nullptr));
 
-	FsOpenWindow(0,0,800,600,1);
+	FsOpenWindow(0,0,1024,768,1);
 
 	for(;;)
 	{
