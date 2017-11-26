@@ -16,6 +16,7 @@ public:
 	void CalculateLeftPart(double x, double y, int direc, int punchS,double T);
     void DrawRightArm(double x, double y) const;
     void DrawLeftArm(double x, double y) const;
+    void updateT(int punchS);
 };
 
 #endif

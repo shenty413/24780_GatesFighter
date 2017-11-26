@@ -2,10 +2,12 @@
 #include <math.h>
 #include "fssimplewindow.h"
 #include "header.h"
+// #include <time.h>
+// #include <stdlib.h>
 
 void Arm::CalculateRightPart(double x, double y, int direc, int punchS,double T){
 	double t = 0.;
-    int rpunchstate = direc * punchS;
+    int rpunchstate = !direc * punchS;
 	if (rpunchstate == 1)
 	{
 		t = T;
@@ -21,7 +23,7 @@ void Arm::CalculateRightPart(double x, double y, int direc, int punchS,double T)
 
 void Arm::CalculateLeftPart(double x, double y, int direc, int punchS,double T){
 	double t = 0.;
-    int lpunchstate = !direc * punchS;
+    int lpunchstate = direc * punchS;
 	if (lpunchstate == 1)
 	{
 		t = T;
@@ -36,9 +38,33 @@ void Arm::CalculateLeftPart(double x, double y, int direc, int punchS,double T){
 }
 
 void Arm::DrawRightArm(double x, double y) const{
+	// // glColor3ub(0, 0, 0);
+	// // glBegin(GL_LINES);
+	// // glVertex2d(x, y);
+	// // printf("%d %d\n", (int)x,(int)y);
+	// // printf("%d %d\n", (int)rshouldpo,(int)(y + 0.7*shoulderl));
+	// // glVertex2d(rshouldpo, y + 0.7*shoulderl);
+	// // glEnd();
+	// // srand((int)time(nullptr));
+
+	// 	// int x0=rand()%800;
+	// 	// int y0=rand()%600;
+	// 	// int x1=rand()%800;
+	// 	// int y1=rand()%600;
+	// glColor3ub(0, 0, 0);
+	// glBegin(GL_LINES);
+	// // printf("320\n");
+	// // glVertex2i((int)x,(int)y);
+	// // glVertex2i((int)rshouldpo,(int)(y + 0.7*shoulderl));
+	// glVertex2i(300,400);
+	// glVertex2i(400,470);
+	// glEnd();
+
+	// <<<<<<<<<<<< original code below >>>>>>>>>>>>>>>
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);
 	glVertex2d(x, y);
+	// printf("%lf %lf\n", rshouldpo,y);
 	
 	glVertex2d(rshouldpo, y);
 	//glVertex2d(x + shoulderl, y);
@@ -147,3 +173,4 @@ void Arm::DrawLeftArm(double x, double y) const{
 	glVertex2d(lhandx - punchl, lhandy + 0.25*punchl);
 	glEnd();
 }
+
