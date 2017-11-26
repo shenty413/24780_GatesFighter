@@ -33,21 +33,28 @@ Player::Player(){
     attack = default_attack;
     direction = default_dir;
     ay = 2000;
+    T = 0;
+    Ttemp = 0;
+    punchState = 0;
 }
 
 void Player::SetCharacter(int charNo){
     switch (charNo) {
         case 1:
             attack = 5;
+            vx = 50;
             break;
         case 2:
             attack = 10;
+            vx = 3000;
             break;
         case 3:
             attack = 20;
+            vx = 1000;
             break;
         case 4:
             attack = 30;
+            vx = 100;
             break;
     }
 }
@@ -64,8 +71,8 @@ const int Player::getRightBoundary(){
     return x + 5;
 }
 
-void Player::Move(int dis){
-    x += dis;
+void Player::Move(){
+    x += vx;
     y += vy * dt;
     vy += ay * dt;
 }
@@ -110,10 +117,11 @@ bool Player::IsPunching(void){
 }
 
 void Player::Punch(void){
-    
+    punchState = 1;
 }
 
 bool Player::CheckFinishPunching(void){
+
 	return true; 
 }
 
@@ -130,10 +138,32 @@ void Player::HPchange(const int amount){
 }
 
 void Player::Draw(){
-    arm.CalculateRightPart(x, y, direction, punchState, 0);
-    arm.CalculateLeftPart(x, y, direction, punchState, 0);
+    // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);
+    if (punchState == 1){
+        if (T < 5 && (T == 0 || T - Ttemp > 0)){
+            Ttemp = T;
+            T++;
+        }else{
+            T--;
+            if (T == 0){
+                punchState = 0;
+            }
+        }
+    }
+    //printf("T: %d, punchState: %d\n", T, punchState);
+    
+    arm.CalculateRightPart(x, y, direction, punchState, T);
+    arm.CalculateLeftPart(x, y, direction, punchState, T);
     arm.DrawRightArm(x, y);
     arm.DrawLeftArm(x, y);
+
+    leg.Calculate(x, y, walkState, walkState);
+    leg.DrawRightLeg(jumpState);
+    leg.DrawLeftLeg(jumpState);
+
+    body.DrawHead(x, y, direction);
+    body.DrawNeck(x, y);
+    body.DrawBody(x, y);
 }
 
 

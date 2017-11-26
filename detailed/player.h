@@ -9,7 +9,8 @@ void DrawPlayer(int x,int y);
 class Player
 {
 protected:
-	int x,y,hp,attack,ay,vx,vy,direction,jumpState,punchState,IsHit;
+	int T, Ttemp;
+	int x,y,hp,attack,ay,vx,vy,direction,jumpState,walkState,punchState,IsHit;
 	int w1,w2,elbowAngle1,elbowAngle2;
     
     Arm arm;
@@ -34,7 +35,7 @@ public:
 			4. being punched
 	*/
 
-	void Move(int dis); // change x
+	void Move(); // change x according to character's speed
     void ChangeDirc(bool dirc);  // change direction
 
 	void InitializeJumping(void); // initialize a jump
