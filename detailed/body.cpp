@@ -1,6 +1,9 @@
 #include "body.h"
+#include <math.h>
+#include "fssimplewindow.h"
+#include "header.h"
 
-void Body::DrawHead(double x,double y, int facialstate){
+void Body::DrawHead(double x,double y, int facialstate) const{
 	glColor3ub(0, 0, 0);
 	//glBegin(GL_TRIANGLE_FAN);
 	glBegin(GL_LINES);
@@ -66,7 +69,7 @@ void Body::DrawHead(double x,double y, int facialstate){
 		glEnd();
 }
 
-void Body::DrawNeck(double x, double y)
+void Body::DrawNeck (double x, double y) const
 {
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);
@@ -75,7 +78,7 @@ void Body::DrawNeck(double x, double y)
 	glEnd();
 }
 
-void Body::DrawBody(double x, double y)
+void Body::DrawBody(double x, double y) const
 {
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);

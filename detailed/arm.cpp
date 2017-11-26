@@ -1,7 +1,11 @@
 #include "arm.h"
+#include <math.h>
+#include "fssimplewindow.h"
+#include "header.h"
 
-void Arm::CalculateRightPart(double x, double y,int rpunchstate,double T){
+void Arm::CalculateRightPart(double x, double y, int direc, int punchS,double T){
 	double t = 0.;
+    int rpunchstate = direc * punchS;
 	if (rpunchstate == 1)
 	{
 		t = T;
@@ -15,8 +19,9 @@ void Arm::CalculateRightPart(double x, double y,int rpunchstate,double T){
 	rhandy = y + arml - arml * cos((45 + xita) * co) - arml * (1 - cos((25 + xita) * co));   //The control point of right hand(y)
 }
 
-void Arm::CalculateLeftPart(double x, double y,int rpunchstate,double T){
+void Arm::CalculateLeftPart(double x, double y, int direc, int punchS,double T){
 	double t = 0.;
+    int lpunchstate = !direc * punchS;
 	if (lpunchstate == 1)
 	{
 		t = T;
@@ -30,11 +35,11 @@ void Arm::CalculateLeftPart(double x, double y,int rpunchstate,double T){
 	lhandy = y + arml - arml * cos((45 + xita) * co) - arml * (1 - cos((25 + xita) * co));   //The control point of left hand(y)
 }
 
-void Arm::DrawRightArm(double x, double y){
+void Arm::DrawRightArm(double x, double y) const{
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);
 	glVertex2d(x, y);
-	//
+	
 	glVertex2d(rshouldpo, y);
 	//glVertex2d(x + shoulderl, y);
 	//glVertex2d(x + shoulderl + arml*sin(25 * co), y+arml - arml * (1-cos(25 * co)));
@@ -89,7 +94,7 @@ void Arm::DrawRightArm(double x, double y){
 	glEnd();
 }
 
-void Arm::DrawLeftArm(double x, double y){
+void Arm::DrawLeftArm(double x, double y) const{
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);
 	glVertex2d(x, y);

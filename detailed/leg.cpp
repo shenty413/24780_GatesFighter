@@ -1,4 +1,7 @@
 #include "leg.h"
+#include <math.h>
+#include "fssimplewindow.h"
+#include "header.h"
 
 void Leg::Calculate(int x,int y,int rlegstate,int llegstate){
 	rootxr = x + 0.6*shoulderl;
@@ -17,7 +20,7 @@ void Leg::Calculate(int x,int y,int rlegstate,int llegstate){
 	}
 }
 
-void Leg::DrawRightLeg(int jumpornot){
+void Leg::DrawRightLeg(int jumpornot) const{
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);
 	glVertex2d(rootxr, rootyr);
@@ -34,7 +37,7 @@ void Leg::DrawRightLeg(int jumpornot){
 	glEnd();
 }
 
-void Leg::DrawLeftLeg(int jumpornot){
+void Leg::DrawLeftLeg(int jumpornot) const{
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINES);
 	glVertex2d(rootxl, rootyl);
