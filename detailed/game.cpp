@@ -91,7 +91,6 @@ void Game::Run(){
     int punch_process = 0;
     int timer = (int)time(NULL);
     while (termination==0) {
-        printf("\n\n\n\n1\n\n\n\n");
         FsPollDevice();
         int key = FsInkey();
         switch (key) {
@@ -100,56 +99,73 @@ void Game::Run(){
                 termination = 1;
                 break;
                 
-                // player 2 moves
+                // player 1 moves
             case FSKEY_W: // jump
-                /* play move sound */
-				printf("\n\n\n\nPlay move sound\n\n\n\n");
-                player.Stop(running);
-                player.PlayOneShot(running);
-                // if not jumping, jump
+
+				// if not jumping, jump
+				if (p1.IsJumping()!=true) 
+				{
+					p1.InitializeJumping(); 
+					/* play move sound */
+					//player.Stop(running);
+					//player.PlayOneShot(running);
+				}
+				
+                
                 break;
             case FSKEY_A: // move left
-                // if punching, cannot move
-                /* if moved, play running sound */
-                player.Stop(running);
-                player.PlayOneShot(running);
+				if (p1.IsPunching() != true) 
+				{
+					p1.ChangeDirc(1);
+					p1.Move(); 
+					// if punching, cannot move
+					/* if moved, play running sound */
+					//player.Stop(running);
+					//player.PlayOneShot(running);
+				}
+               
                 break;
             case FSKEY_S: // move right
-                // if punching, cannot move
-                /* if moved, play running sound */
-                player.Stop(running);
-                player.PlayOneShot(running);
+				if (p1.IsPunching() != true)
+				{
+					p1.ChangeDirc(0);
+					p1.Move();
+					// if punching, cannot move
+					/* if moved, play running sound */
+					//player.Stop(running);
+					//player.PlayOneShot(running);
+				}
                 break;
             case FSKEY_D: // punch
                 /* if punch, play punch sound */
-                player.Stop(punch);
-                player.PlayOneShot(punch);
+                //player.Stop(punch);
+                //player.PlayOneShot(punch);
                 break;
                 
                 // player 2 moves
             case FSKEY_I: // jump
                 // if not jumping, jump
                 /* play move sound */
-                player.Stop(running);
-                player.PlayOneShot(running);
+                //player.Stop(running);
+                //player.PlayOneShot(running);
                 break;
             case FSKEY_J: // move left
                 // if punching, cannot move
                 /* play move sound */
-                player.Stop(running);
-                player.PlayOneShot(running);
+                //player.Stop(running);
+                //player.PlayOneShot(running);
                 break;
             case FSKEY_K: // move right
                 // if punching, cannot move
                 /* play move sound */
-                player.Stop(running);
-                player.PlayOneShot(running);
+                //player.Stop(running);
+                //player.PlayOneShot(running);
                 break;
             case FSKEY_L: // punch
                 // if not punching, punch
                 /* if punch, play punch sound */
-                player.Stop(punch);
-                player.PlayOneShot(punch);
+                //player.Stop(punch);
+                //player.PlayOneShot(punch);
                 if (p2.IsPunching())
                 {
                     punch_timer = 0;
@@ -166,14 +182,14 @@ void Game::Run(){
             if (p1.IfPunchHit(p2))
             {
                 /* if hit, play moaning sound */
-                player.Stop(moaning);
-                player.PlayOneShot(moaning);
+                //player.Stop(moaning);
+                //player.PlayOneShot(moaning);
             }
             if (p1.CheckFinishPunching())
             {
                 /* if punch, play punch sound */
-                player.Stop(punch);
-                player.PlayOneShot(punch);
+                //player.Stop(punch);
+                //player.PlayOneShot(punch);
                 
             }
         }
@@ -181,23 +197,23 @@ void Game::Run(){
         if (p1.IsJumping())
         {
             /* play move sound */
-            player.Stop(running);
-            player.PlayOneShot(running);
+            //player.Stop(running);
+            //player.PlayOneShot(running);
             
         }
         // player 2 jumping
         if (p2.IsPunching())
         {
             /* play move sound */
-            player.Stop(running);
-            player.PlayOneShot(running);
+            //player.Stop(running);
+			//player.PlayOneShot(running);
         }
         // player 2 punching
         if (p2.IsJumping())
         {
             /* if punch, play punch sound */
-            player.Stop(punch);
-            player.PlayOneShot(punch);
+			//player.Stop(punch);
+			//player.PlayOneShot(punch);
         }
         
         // count time, check if time runs out

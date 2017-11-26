@@ -34,7 +34,7 @@ public:
 			4. being punched
 	*/
 
-	void Move(int dis); // change x
+	void Move(); // change x
     void ChangeDirc(bool dirc);  // change direction
 
 	void InitializeJumping(void); // initialize a jump

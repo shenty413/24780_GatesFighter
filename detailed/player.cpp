@@ -64,12 +64,16 @@ const int Player::getRightBoundary(){
     return x + 5;
 }
 
-void Player::Move(int dis){
-    x += dis;
+void Player::Move(){
+	if (direction)
+		x -= vx;
+	else
+		x += vx;
     y += vy * dt;
     vy += ay * dt;
 }
 
+// dirc = 1, left; dirc = 0, right
 void Player::ChangeDirc(bool dirc){
     direction = dirc;
 }
