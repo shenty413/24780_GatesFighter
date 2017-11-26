@@ -34,13 +34,26 @@ int main(void)
 		}
 		else if(FSKEY_W==key)
 		{
-			p1.Punch();
+			if (!p1.IsJumping()){
+				p1.InitializeJumping();
+			}
 		}
 		else if(FSKEY_S==key)
 		{
-			p1.Punch();
+			if (!p1.IsPunching()){
+				p1.InitializePunching();
+			}
 		}
+
+		// Update vy ,y and ay
+		if (p1.IsJumping()){
+			p1.Jump();
+		}
+		p1.CheckHitGround();
 		p1.Draw();
+
+
+
 		FsSwapBuffers();
 		FsSleep(10);
 	}

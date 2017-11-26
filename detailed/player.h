@@ -47,10 +47,10 @@ public:
 	void InitializePunching(void); // initialize a punch
 	bool IsPunching(void); // punchState=1, w1, w2
 	void Punch(void); // change elbowAngle1, elbowAngle2
-	bool CheckFinishPunching(void);
+	int GetHitState(void);
 
 	/*the following functions describe what happen when a player hit his/her opponent*/
-	bool IfPunchHit(const Player &opponent); // 
+	bool IfPunchHit(Player &opponent); // 
 	void ChangeHitState(); // change the isHit state of a player if he/she is hit by the opponent
 	void HPchange(const int amount);
 

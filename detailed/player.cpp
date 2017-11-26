@@ -64,11 +64,11 @@ const int Player::getAttack(){
 }
 
 const int Player::getLeftBoundary(){
-    return x - 5;
+    return x - 50;
 }
 
 const int Player::getRightBoundary(){
-    return x + 5;
+    return x + 50;
 }
 
 void Player::Move(){
@@ -77,8 +77,6 @@ void Player::Move(){
 		x -= vx;
 	else
 		x += vx;
-    y += vy * dt;
-    vy += ay * dt;
 }
 
 // dirc = 1, left; dirc = 0, right
@@ -88,7 +86,9 @@ void Player::ChangeDirc(bool dirc){
 
 void Player::InitializeJumping(void){
     jumpState = 1;
-    vy = jumpSpeed;
+    ay = 2000;
+    vy = -400;
+    //vy = jumpSpeed;
 }
 
 bool Player::IsJumping(void){
@@ -99,13 +99,16 @@ bool Player::IsJumping(void){
 }
 
 void Player::Jump(void){
-    ay = 2000;
-    vy = -400;
+    y += vy * 0.01;
+    vy += ay * 0.01;
+    printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
 }
 
 void Player::CheckHitGround(void){
     if (vy > 400 && jumpState){
         ay = 0;
+        vy = 0;
+        y = 400;
         jumpState = 0;
     }
 }
@@ -125,17 +128,31 @@ void Player::Punch(void){
     punchState = 1;
 }
 
-bool Player::CheckFinishPunching(void){
-
-	return true; 
-}
-
-bool Player::IfPunchHit(const Player &opponent){
+bool Player::IfPunchHit(Player &opponent){
+    int armLength = 50;
+    if (direction){ // facing left
+        if (x - armLength <= opponent.getLeftBoundary()){
+            return true;
+        }
+    }
+    if (!direction){ // facing left
+        if (x + armLength >= opponent.getRightBoundary()){
+            return true;
+        }
+    }
     return false;
 }
 
 void Player::ChangeHitState(){
-    
+    if (IsHit == 1){
+        IsHit = 0;
+    }else{
+        IsHit = 1;
+    }
+}
+
+int Player::GetHitState(){
+    return IsHit;
 }
 
 void Player::HPchange(const int amount){
@@ -155,7 +172,7 @@ void Player::Draw(){
             }
         }
     }
-    //printf("T: %d, punchState: %d\n", T, punchState);
+    //("T: %d, punchState: %d\n", T, punchState);
     
     arm.CalculateRightPart(x, y, direction, punchState, T);
     arm.CalculateLeftPart(x, y, direction, punchState, T);
