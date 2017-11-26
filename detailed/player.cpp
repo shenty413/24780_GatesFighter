@@ -72,11 +72,16 @@ const int Player::getRightBoundary(){
 }
 
 void Player::Move(){
-    x += vx;
+
+	if (direction)
+		x -= vx;
+	else
+		x += vx;
     y += vy * dt;
     vy += ay * dt;
 }
 
+// dirc = 1, left; dirc = 0, right
 void Player::ChangeDirc(bool dirc){
     direction = dirc;
 }

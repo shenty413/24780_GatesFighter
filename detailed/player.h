@@ -36,6 +36,7 @@ public:
 	*/
 
 	void Move(); // change x according to character's speed
+
     void ChangeDirc(bool dirc);  // change direction
 
 	void InitializeJumping(void); // initialize a jump
