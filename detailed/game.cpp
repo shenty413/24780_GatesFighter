@@ -5,8 +5,8 @@
 #include "fssimplewindow.h"
 #include "yssimplesound.h"
 
-YsSoundPlayer musicplayer( YsSoundPlayer::SoundData *punch, YsSoundPlayer::SoundData *bleeding,
-                          YsSoundPlayer::SoundData *moaning, YsSoundPlayer::SoundData *running)
+YsSoundPlayer musicplayer( YsSoundPlayer::SoundData &punch,
+                          YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running)
 {
     /* An instance of YsSoundPlayer */
     YsSoundPlayer player;
@@ -25,23 +25,24 @@ YsSoundPlayer musicplayer( YsSoundPlayer::SoundData *punch, YsSoundPlayer::Sound
     // Just in case you ended up copying datafiles directory instead of individual files,
     
     /* load running sound */
-    if(YSOK != running->LoadWav("running.wav") &&
-       YSOK != running->LoadWav("datafiles/running.wav"))
+    if(YSOK != running.LoadWav("running.wav") &&
+       YSOK != running.LoadWav("datafiles/running.wav"))
+    {
+        printf("Error!  Cannot load running.wav!\n");
+    }
+    /* load moaning sound */
+    if(YSOK!= moaning.LoadWav("moaning.wav") &&
+       YSOK!= moaning.LoadWav("datafiles/moaning.wav"))
     {
         printf("Error!  Cannot load moaning.wav!\n");
     }
-    /* load moaning sound */
-    if(YSOK!= moaning->LoadWav("moaning.wav") &&
-       YSOK!= moaning->LoadWav("datafiles/moaning.wav"))
-    {
-        printf("Error!  Cannot load bleeding.wav!\n");
-    }
     /* load punch sound */
-    if(YSOK!= punch->LoadWav("punch.wav") &&
-       YSOK!= punch->LoadWav("datafiles/punch.wav"))
+    if(YSOK!= punch.LoadWav("punch.wav") &&
+       YSOK!= punch.LoadWav("datafiles/punch.wav"))
     {
-        printf("Error!  Cannot load bleeding.wav!\n");
+        printf("Error!  Cannot load punch.wav!\n");
     }
+	printf("Wav file reading successful.\n");
     return player;
 }
 
@@ -75,83 +76,60 @@ void Game::setKo(void) {
 }
 
 void Game::Run(){
-		int key = FsInkey();
-		switch (key) {
-		case FSKEY_ESC: // exit the game 
-			setExit();
-			termination = 1;
-			break;
 
-			// player 2 moves 
-		case FSKEY_W: // jump 
-			// if not jumping, jump 
-			if (p2.IsJumping() == 0)
-				p2.InitializeJumping();
-			break;
-		case FSKEY_A: // move left 
-			// if punching, cannot move  
-			break;
-		case FSKEY_S: // move right 
-			// if punching, cannot move  
-			break;
-		case FSKEY_D: // punch 
-			break;
+    // wait for a key stroke
+	printf("\n\n\n\nSound player?\n\n\n\n");
+	/*
+    YsSoundPlayer::SoundData punch,moaning,running;
+    YsSoundPlayer player;
 
-			// player 2 moves 
-		case FSKEY_I: // jump 
-			// if not jumping, jump
-			break;
-		case FSKEY_J: // move left 
-			// if punching, cannot move  
-			break;
-		case FSKEY_K: // move right 
-			// if punching, cannot move  
-			break;
-		case FSKEY_L: // punch 
-			// if not punching, punch 
-			if (p2.IsPunching())
-			{
-				punch_timer = 0;
-			}
-			break;
-		default:
-			break;
-		}
-		// player 1 punching 
-		if (p1.IsPunching()) 
-		{				
+    player = musicplayer(punch, moaning, running);
+	*/
 
-			p1.Punch();
-			if (p1.IfPunchHit(p2)) 
-			{
-			
-			}
-			if (p1.CheckFinishPunching())
-			{
-
-			}
-		}
-		// player 1 jumping 
-		if (p1.IsJumping()) 
-		{
-			
-		}
-		// player 2 jumping 
-		if (p2.IsPunching()) 
-		{
-		
-		}
-		// player 2 punching 
-		if (p2.IsJumping()) 
-		{
-		
-		}
-
-		// count time, check if time runs out 
-		int current_time = (int)time(NULL);
-		if (current_time - timer >= 20)
-			termination = 1;
-	}
+    int termination = 0;
+    int punch_timer = 0;
+    int punch_process = 0;
+    int timer = (int)time(NULL);
+    while (termination==0) {
+        printf("\n\n\n\n1\n\n\n\n");
+        FsPollDevice();
+        int key = FsInkey();
+        switch (key) {
+            case FSKEY_ESC: // exit the game
+                setExit();
+                termination = 1;
+                break;
+                
+                // player 2 moves
+            case FSKEY_W: // jump
+                /* play move sound */
+				printf("\n\n\n\nPlay move sound\n\n\n\n");
+                player.Stop(running);
+                player.PlayOneShot(running);
+                // if not jumping, jump
+                break;
+            case FSKEY_A: // move left
+                // if punching, cannot move
+                /* if moved, play running sound */
+                player.Stop(running);
+                player.PlayOneShot(running);
+                break;
+            case FSKEY_S: // move right
+                // if punching, cannot move
+                /* if moved, play running sound */
+                player.Stop(running);
+                player.PlayOneShot(running);
+                break;
+            case FSKEY_D: // punch
+                /* if punch, play punch sound */
+                player.Stop(punch);
+                player.PlayOneShot(punch);
+                break;
+                
+                // player 2 moves
+            case FSKEY_I: // jump
+                // if not jumping, jump
+                /* play move sound */
                 player.Stop(running);
                 player.PlayOneShot(running);
                 break;
@@ -203,10 +181,30 @@ void Game::Run(){
         if (p1.IsJumping())
         {
             /* play move sound */
+            player.Stop(running);
+            player.PlayOneShot(running);
+            
+        }
+        // player 2 jumping
+        if (p2.IsPunching())
+        {
             /* play move sound */
             player.Stop(running);
             player.PlayOneShot(running);
         }
+        // player 2 punching
+        if (p2.IsJumping())
+        {
+            /* if punch, play punch sound */
+            player.Stop(punch);
+            player.PlayOneShot(punch);
+        }
+        
+        // count time, check if time runs out
+        int current_time = (int)time(NULL);
+        if (current_time - timer >= 20)
+            termination = 1;
+    }
     printf("p1 attack: %d\n",p1.getAttack());
     printf("p2 attack: %d\n",p2.getAttack());
 }
