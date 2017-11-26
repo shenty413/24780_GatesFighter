@@ -206,7 +206,7 @@ void Game::Run(){
 			//player.Stop(punch);
 			//player.PlayOneShot(punch);
 
-            if (p1.IfPunchHit(p2))
+			if (p1.IfPunchHit(p2) && p2.GetHitState() != true)
             {
 				p2.ChangeHitState(); 
 				p2.HPchange(p1.getAttack()); 
@@ -226,12 +226,16 @@ void Game::Run(){
         // player 1 jumping
         if (p1.IsJumping())
         {
+			p1.Jump();
             /* play move sound */
             //player.Stop(running);
             //player.PlayOneShot(running);
-            
+
+			// check if jumping
+			p1.CheckHitGround(); 
+				
         }
-        // player 2 jumping
+        // player 2 punching
         if (p2.IsPunching())
         {
 			p2.Punch();
@@ -239,8 +243,10 @@ void Game::Run(){
 			//player.Stop(punch);
 			//player.PlayOneShot(punch);
 
-			if (p2.IfPunchHit(p1))
+			if (p2.IfPunchHit(p1) && p1.GetHitState() != true)
 			{
+				p1.ChangeHitState();
+				p1.HPchange(p2.getAttack());
 				/* if hit, play moaning sound */
 				//player.Stop(moaning);
 				//player.PlayOneShot(moaning);
@@ -254,12 +260,14 @@ void Game::Run(){
 			}
 			*/
         }
-        // player 2 punching
+        // player 2 jumping
         if (p2.IsJumping())
         {
+			p2.Jump();
             /* if punch, play punch sound */
 			//player.Stop(punch);
 			//player.PlayOneShot(punch);
+			p2.CheckHitGround();
         }
         
         // count time, check if time runs out
