@@ -39,8 +39,12 @@ int main(void)
 					printf("Player 2 has chosen %d\n", character2);
                     Game game;
                     game.SetCharacter(character1, character2); // Set choosen character
+                    //FsCloseWindow();
+                    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+                    FsSleep(20);
+                    //FsOpenWindow(16,16,800,600,1);
                     game.Run(); // Start Game
-					/* 
+					/*
 						three possible ways of ending a game:
 						1. user presses esc
 						2. time runs out 

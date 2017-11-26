@@ -23,7 +23,7 @@ const int jumpSpeed = -10;
 const int default_hp = 100;
 const int default_attack = 10;
 const bool default_dir = 1;
-const int dt = 0.01;
+const double dt = 0.01;
 
 
 Player::Player(){
@@ -59,24 +59,25 @@ void Player::SetCharacter(int charNo){
     }
 }
 
-const int Player::getAttack(){
+int Player::getAttack(){
     return attack;
 }
 
-const int Player::getLeftBoundary(){
-    return x - 50;
+int Player::getLeftBoundary(){
+    return x - 100;
 }
 
-const int Player::getRightBoundary(){
-    return x + 50;
+int Player::getRightBoundary(){
+    return x + 100;
 }
 
 void Player::Move(){
-
-	if (direction)
-		x -= vx;
-	else
-		x += vx;
+    if (direction == 1){
+		x -= vx * dt;
+    }
+    else{
+		x += vx * dt;
+    }
 }
 
 // dirc = 1, left; dirc = 0, right
@@ -99,8 +100,8 @@ bool Player::IsJumping(void){
 }
 
 void Player::Jump(void){
-    y += vy * 0.01;
-    vy += ay * 0.01;
+    y += vy * dt;
+    vy += ay * dt;
     printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
 }
 
@@ -129,14 +130,21 @@ void Player::Punch(void){
 }
 
 bool Player::IfPunchHit(Player &opponent){
-    int armLength = 50;
+    int armLength = 300;
+    printf("Left Boundry: %d\n", opponent.getLeftBoundary());
+    printf("Right Boundry: %d\n", opponent.getRightBoundary());
+    printf("x: %d\n", x);
+    printf("left punch point: %d\n",x - armLength);
+    printf("right punch point: %d\n",x + armLength);
     if (direction){ // facing left
-        if (x - armLength <= opponent.getLeftBoundary()){
+        if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()){
+            printf("Is hit from left!");
             return true;
         }
     }
-    if (!direction){ // facing left
-        if (x + armLength >= opponent.getRightBoundary()){
+    if (!direction){ // facing right
+        if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary()){
+            printf("Is hit from Right!");
             return true;
         }
     }
@@ -157,6 +165,7 @@ int Player::GetHitState(){
 
 void Player::HPchange(const int amount){
     hp -= amount;
+    printf("HP: %d\n",hp);
 }
 
 void Player::Draw(){
@@ -172,7 +181,8 @@ void Player::Draw(){
             }
         }
     }
-    //("T: %d, punchState: %d\n", T, punchState);
+    //printf("T: %d, punchState: %d\n", T, punchState);
+    //printf("x: %d, y: %d", x,y);
     
     arm.CalculateRightPart(x, y, direction, punchState, T);
     arm.CalculateLeftPart(x, y, direction, punchState, T);
