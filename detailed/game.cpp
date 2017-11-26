@@ -51,6 +51,8 @@ void Game::Run(){
 			// player 2 moves 
 		case FSKEY_W: // jump 
 			// if not jumping, jump 
+			if (p2.IsJumping() == 0)
+				p2.InitializeJumping();
 			break;
 		case FSKEY_A: // move left 
 			// if punching, cannot move  
