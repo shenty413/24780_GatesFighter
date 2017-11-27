@@ -8,10 +8,6 @@
 YsSoundPlayer musicplayer( YsSoundPlayer::SoundData &punch,
                           YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running)
 {
-    /* An instance of YsSoundPlayer */
-    YsSoundPlayer player;
-   
-    
     /* The sound player object must be made current and started before playing a sound data. */
     /* Make sure to do this after opening a Window. */
     player.MakeCurrent();
@@ -42,8 +38,12 @@ YsSoundPlayer musicplayer( YsSoundPlayer::SoundData &punch,
     {
         printf("Error!  Cannot load punch.wav!\n");
     }
+	/* load background music*/
+	if (YSOK != backgnd.LoadWav("backgnd.wav")
+		&& YSOK != backgnd.LoadWav("datafiles/backgnd.wav")) {
+		printf("Error! Cannot load backgnd.wav!\n");
+	}
 	printf("Wav file reading successful.\n");
-    return player;
 }
 
 void Game::SetCharacter(int pn1, int pn2){
@@ -79,12 +79,12 @@ void Game::Run(){
 
     // wait for a key stroke
 	printf("\n\n\n\nSound player?\n\n\n\n");
-	/*
-    YsSoundPlayer::SoundData punch,moaning,running;
+	
+    YsSoundPlayer::SoundData punch,moaning,running, backgnd;
     YsSoundPlayer player;
 
-    player = musicplayer(punch, moaning, running);
-	*/
+    musicplayer(player, punch, moaning, running, backgnd);
+	
 
     int termination = 0;
     int punch_timer = 0;
@@ -145,9 +145,15 @@ void Game::Run(){
 					//player.PlayOneShot(punch);
 				}
                 break;
-                
-
-                // player 2 moves
+				/* press Key B to play background music*/
+			case FSKEY_B:
+				player.PlayBackground(backgnd);
+				break;
+               /* press key P to stop background music*/
+			case FSKEY_P:
+				player.Stop(backgnd);
+				break;
+				// player 2 moves
             case FSKEY_I: // jump
 				// if not jumping, jump
 				if (p2.IsJumping() != true)
