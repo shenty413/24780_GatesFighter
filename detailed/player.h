@@ -23,9 +23,9 @@ public:
     void SetCharacter(int charNo);
 
 	/* The following functions are getters of this class. */
-	const int getAttack();
-	const int getLeftBoundary();
-	const int getRightBoundary();
+	int getAttack();
+	int getLeftBoundary();
+	int getRightBoundary();
 
 	/*
 		The following functions are modifiers based on different moves that the players can do:

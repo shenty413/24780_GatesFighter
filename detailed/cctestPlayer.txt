@@ -2,6 +2,4 @@ mkdir -p test.app/Contents/MacOS
 
 clang -c fssimplewindowobjc.m
 
-clang testPlayer.cpp fssimplewindowcpp.cpp arm.cpp body.cpp leg.cpp player.cpp ysglfontdata.cpp fssimplewindowobjc.o -o test.app/Contents/MacOS/exe -framework Cocoa -framework OpenGL -std=c++11 -lstdc++
-
-test.app/Contents/MacOS/exe
+clang game-main.cpp fssimplewindowcpp.cpp arm.cpp body.cpp leg.cpp player.cpp ysglfontdata.cpp fssimplewindowobjc.o -o test.app/Contents/MacOS/exe -framework Cocoa -framework OpenGL -std=c++11 -lstdc++

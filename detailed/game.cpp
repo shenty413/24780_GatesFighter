@@ -91,6 +91,9 @@ void Game::Run(){
     int punch_timer = 0;
     int punch_process = 0;
     int timer = (int)time(NULL);
+    //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    //FsOpenWindow(16,16,800,600,1);
+    //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     while (termination==0) {
         FsPollDevice();
         int key = FsInkey();
@@ -124,19 +127,19 @@ void Game::Run(){
 				}
                
                 break;
-            case FSKEY_S: // move right
-				if (p1.IsPunching() != true)
-				{
+            case FSKEY_D: // move right
+				//if (p1.IsPunching() != true)
+				//{
 					p1.ChangeDirc(0);
 					p1.Move();
 					// if punching, cannot move
 					/* if moved, play running sound */
 					//player.Stop(running);
 					//player.PlayOneShot(running);
-				}
+				//}
                 break;
 
-            case FSKEY_D: // punch
+            case FSKEY_S: // punch
 				// if not punching, punch 
 				if (p1.IsPunching() != true)
 				{
@@ -178,7 +181,7 @@ void Game::Run(){
 				}
 				break;
 
-            case FSKEY_K: // move right
+            case FSKEY_L: // move right
 				// if punching, cannot move
 				if (p2.IsPunching() != true)
 				{
@@ -190,24 +193,21 @@ void Game::Run(){
 				}
 				break;
 
-            case FSKEY_L: // punch
+            case FSKEY_K: // punch
 				// if not punching, punch 
-				if (p1.IsPunching() != true)
+				if (p2.IsPunching() != true)
 				{
-					p1.InitializePunching();
+					p2.InitializePunching();
 					/* if punch, play punch sound */
 					//player.Stop(punch);
 					//player.PlayOneShot(punch);
 				}
 				break;
-
-            default:
-                break;
         }
         // player 1 punching
         if (p1.IsPunching())
         {
-            
+            printf("p1 is punching");
             p1.Punch();
 			/* if punch, play punch sound */
 			//player.Stop(punch);
@@ -245,6 +245,7 @@ void Game::Run(){
         // player 2 punching
         if (p2.IsPunching())
         {
+            printf("p2 is punching");
 			p2.Punch();
 			/* if punch, play punch sound */
 			//player.Stop(punch);
@@ -276,12 +277,33 @@ void Game::Run(){
 			//player.PlayOneShot(punch);
 			p2.CheckHitGround();
         }
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+        p1.Draw();
+        p2.Draw();
+        
+        glColor3d(1, 0, 0);
+        glBegin(GL_LINES);
+        glVertex2i(p2.getLeftBoundary(), 0);
+        glVertex2i(p2.getLeftBoundary(), 1000);
+        glEnd();
+        
+        glColor3d(0, 0, 1);
+        glBegin(GL_LINES);
+        glVertex2i(p2.getRightBoundary(), 0);
+        glVertex2i(p2.getRightBoundary(), 1000);
+        glEnd();
+    
+        
+        FsSwapBuffers();
+        FsSleep(10);
         
         // count time, check if time runs out
         int current_time = (int)time(NULL);
-        if (current_time - timer >= 20)
-            termination = 1;
+        //if (current_time - timer >= 20)
+          //  termination = 1;
     }
+    
     printf("p1 attack: %d\n",p1.getAttack());
     printf("p2 attack: %d\n",p2.getAttack());
 }
