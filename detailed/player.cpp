@@ -42,7 +42,7 @@ void Player::SetCharacter(int charNo){
     switch (charNo) {
         case 1:
             attack = 5;
-            vx = 50;
+            vx = 500;
             break;
         case 2:
             attack = 10;
@@ -166,6 +166,10 @@ int Player::GetHitState(){
 void Player::HPchange(const int amount){
     hp -= amount;
     printf("HP: %d\n",hp);
+}
+
+int Player::GetHP(void) {
+	return hp;
 }
 
 void Player::Draw(){

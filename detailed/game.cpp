@@ -4,6 +4,10 @@
 #include <time.h>
 #include "fssimplewindow.h"
 #include "yssimplesound.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "fssimplewindow.h"
+#include "ysglfontdata.h"
 
 void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
                           YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running,
@@ -76,6 +80,53 @@ void Game::setKo(void) {
     ko = true;
 }
 
+void Game::DrawHpBar(int hp1, int hp2) {
+
+	double p1 = (double)hp1 / 100;
+	double p2 = (double)hp2 / 100;
+
+	glColor3ub(0, 255, 0);
+	glRasterPos2i(0, 70);
+	YsGlDrawFontBitmap20x32("fighter1");
+	glRasterPos2i(640, 70);
+	YsGlDrawFontBitmap20x32("fighter2");
+	/* draw HP bar of p1 */
+	glColor3ub(0, 0, 0);
+	glBegin(GL_LINE_LOOP);
+	glVertex2i(0, 0);
+	glVertex2i(0, 30);
+	glVertex2i(200, 30);
+	glVertex2i(200, 0);
+	glEnd();
+
+	/* red part */
+	glColor3ub(255, 0, 0);
+	glBegin(GL_QUADS);
+	glVertex2i(0, 0);
+	glVertex2i(0, 30);
+	glVertex2i(200 * (1 - p1), 30);
+	glVertex2i(200 * (1 - p1), 0);
+	glEnd();
+
+	/* draw HP bar of p2 */
+	glColor3ub(0, 0, 0);
+	glBegin(GL_LINE_LOOP);
+	glVertex2i(800, 0);
+	glVertex2i(800, 30);
+	glVertex2i(600, 30);
+	glVertex2i(600, 0);
+	glEnd();
+
+	/* draw red part */
+	glColor3ub(255, 0, 0);
+	glBegin(GL_QUADS);
+	glVertex2i(800, 0);
+	glVertex2i(800, 30);
+	glVertex2i(600 + 200 * (1 - p2), 30);
+	glVertex2i(600 + 200 * (1 - p2), 0);
+	glEnd();
+};
+
 void Game::Run(){
 
     // wait for a key stroke
@@ -110,33 +161,35 @@ void Game::Run(){
 				{
 					p1.InitializeJumping(); 
 					/* play move sound */
-					//player.Stop(running);
-					//player.PlayOneShot(running);
+					player.Stop(running);
+					player.PlayOneShot(running);
 				}
 				
                 break;
             case FSKEY_A: // move left
+				// if punching, cannot move
 				if (p1.IsPunching() != true) 
 				{
 					p1.ChangeDirc(1);
 					p1.Move(); 
-					// if punching, cannot move
+					
 					/* if moved, play running sound */
-					//player.Stop(running);
-					//player.PlayOneShot(running);
+					player.Stop(running);
+					player.PlayOneShot(running);
 				}
                
                 break;
             case FSKEY_D: // move right
-				//if (p1.IsPunching() != true)
-				//{
+				// if punching, cannot move
+				if (p1.IsPunching() != true)
+				{
 					p1.ChangeDirc(0);
 					p1.Move();
-					// if punching, cannot move
+					
 					/* if moved, play running sound */
-					//player.Stop(running);
-					//player.PlayOneShot(running);
-				//}
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
                 break;
 
             case FSKEY_S: // punch
@@ -145,18 +198,11 @@ void Game::Run(){
 				{
 					p1.InitializePunching();
 					/* if punch, play punch sound */
-					//player.Stop(punch);
-					//player.PlayOneShot(punch);
+					player.Stop(punch);
+					player.PlayOneShot(punch);
 				}
                 break;
-				/* press Key B to play background music*/
-			case FSKEY_B:
-				player.PlayBackground(backgnd);
-				break;
-               /* press key P to stop background music*/
-			case FSKEY_P:
-				player.Stop(backgnd);
-				break;
+
 				// player 2 moves
             case FSKEY_I: // jump
 				// if not jumping, jump
@@ -164,8 +210,8 @@ void Game::Run(){
 				{
 					p2.InitializeJumping();
 					/* play move sound */
-					//player.Stop(running);
-					//player.PlayOneShot(running);
+					player.Stop(running);
+					player.PlayOneShot(running);
 				}
 				break;
 
@@ -176,8 +222,8 @@ void Game::Run(){
 					p2.Move();
 					// if punching, cannot move
 					/* if moved, play running sound */
-					//player.Stop(running);
-					//player.PlayOneShot(running);
+					player.Stop(running);
+					player.PlayOneShot(running);
 				}
 				break;
 
@@ -188,8 +234,8 @@ void Game::Run(){
 					p2.ChangeDirc(0);
 					p2.Move();
 					/* if moved, play running sound */
-					//player.Stop(running);
-					//player.PlayOneShot(running);
+					player.Stop(running);
+					player.PlayOneShot(running);
 				}
 				break;
 
@@ -199,44 +245,44 @@ void Game::Run(){
 				{
 					p2.InitializePunching();
 					/* if punch, play punch sound */
-					//player.Stop(punch);
-					//player.PlayOneShot(punch);
+					player.Stop(punch);
+					player.PlayOneShot(punch);
 				}
 				break;
+
+				// music functions 
+				/* press Key B to play background music*/
+			case FSKEY_B:
+				player.PlayBackground(backgnd);
+				break;
+
+				/* press key P to stop background music*/
+			case FSKEY_P:
+				player.Stop(backgnd);
+				break;
         }
+
+		// player motions and logic behind interactions  
         // player 1 punching
         if (p1.IsPunching())
         {
             printf("p1 is punching");
             p1.Punch();
-			/* if punch, play punch sound */
-			//player.Stop(punch);
-			//player.PlayOneShot(punch);
 
 			if (p1.IfPunchHit(p2) && p2.GetHitState() != true)
             {
 				p2.ChangeHitState(); 
 				p2.HPchange(p1.getAttack()); 
                 /* if hit, play moaning sound */
-                //player.Stop(moaning);
-                //player.PlayOneShot(moaning);
+                player.Stop(moaning);
+                player.PlayOneShot(moaning);
             }
 
-            /*
-			if (p1.CheckFinishPunching())
-            {
-				// if punch finished, change player punch state back to 0
-                
-            }
-			*/
         }
         // player 1 jumping
         if (p1.IsJumping())
         {
 			p1.Jump();
-            /* play move sound */
-            //player.Stop(running);
-            //player.PlayOneShot(running);
 
 			// check if jumping
 			p1.CheckHitGround(); 
@@ -247,34 +293,21 @@ void Game::Run(){
         {
             printf("p2 is punching");
 			p2.Punch();
-			/* if punch, play punch sound */
-			//player.Stop(punch);
-			//player.PlayOneShot(punch);
 
 			if (p2.IfPunchHit(p1) && p1.GetHitState() != true)
 			{
 				p1.ChangeHitState();
 				p1.HPchange(p2.getAttack());
 				/* if hit, play moaning sound */
-				//player.Stop(moaning);
-				//player.PlayOneShot(moaning);
+				player.Stop(moaning);
+				player.PlayOneShot(moaning);
 			}
 
-			/*
-			if (p2.CheckFinishPunching())
-			{
-
-
-			}
-			*/
         }
         // player 2 jumping
         if (p2.IsJumping())
         {
 			p2.Jump();
-            /* if punch, play punch sound */
-			//player.Stop(punch);
-			//player.PlayOneShot(punch);
 			p2.CheckHitGround();
         }
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -282,6 +315,8 @@ void Game::Run(){
         p1.Draw();
         p2.Draw();
         
+		// boundary 
+		/*
         glColor3d(1, 0, 0);
         glBegin(GL_LINES);
         glVertex2i(p2.getLeftBoundary(), 0);
@@ -293,17 +328,17 @@ void Game::Run(){
         glVertex2i(p2.getRightBoundary(), 0);
         glVertex2i(p2.getRightBoundary(), 1000);
         glEnd();
-    
+		*/ 
         
+		// draw hp bars 
+		DrawHpBar(p1.GetHP(), p2.GetHP());
         FsSwapBuffers();
         FsSleep(10);
         
         // count time, check if time runs out
         int current_time = (int)time(NULL);
-        //if (current_time - timer >= 20)
+        //if (current_time - timer >= 100)
           //  termination = 1;
     }
     
-    printf("p1 attack: %d\n",p1.getAttack());
-    printf("p2 attack: %d\n",p2.getAttack());
 }

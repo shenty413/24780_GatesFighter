@@ -4,8 +4,11 @@
 #include "ysglfontdata.h"
 #define fullHp 500
 /* p1, p2 are the percentage of the of left HP of Player1 and Player2 respectively */
-void drawHpBar(double p1, double p2) {
-   
+void drawHpBar(int hp1, int hp2) {
+	
+	double p1 = (double)hp1 / 100; 
+	double p2 = (double)hp2 / 100;
+
     glColor3ub(0,255,0);
     glRasterPos2i(0, 70);
     YsGlDrawFontBitmap20x32("fighter1");
@@ -37,6 +40,7 @@ void drawHpBar(double p1, double p2) {
     glVertex2i(600, 30);
     glVertex2i(600, 0);
     glEnd();
+
     /* draw red part */
     glColor3ub(255, 0, 0);
     glBegin(GL_QUADS);

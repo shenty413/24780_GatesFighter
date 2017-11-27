@@ -4,8 +4,6 @@
 #include "leg.h"
 #include "arm.h"
 
-void DrawPlayer(int x,int y);
-
 class Player
 {
 protected:
@@ -53,6 +51,7 @@ public:
 	bool IfPunchHit(Player &opponent); // 
 	void ChangeHitState(); // change the isHit state of a player if he/she is hit by the opponent
 	void HPchange(const int amount);
+	int GetHP(void);
 
 
 	void Draw();

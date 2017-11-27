@@ -24,6 +24,7 @@ public:
 	void setExit(void); // set exit flag
 	void setTimeout(void); // set timeout flag
 	void setKo(void); // set ko flag
+	void DrawHpBar(int hp1, int hp2);
 };
 
 #endif
