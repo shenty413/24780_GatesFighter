@@ -5,8 +5,9 @@
 #include "fssimplewindow.h"
 #include "yssimplesound.h"
 
-YsSoundPlayer musicplayer( YsSoundPlayer::SoundData &punch,
-                          YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running)
+void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
+                          YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running,
+						  YsSoundPlayer::SoundData &backgnd)
 {
     /* The sound player object must be made current and started before playing a sound data. */
     /* Make sure to do this after opening a Window. */
