@@ -6,6 +6,7 @@
 #include "game.h"
 #include "arm.h"
 #include "leg.h"
+#include "HP.h"
 
 class Game
 {

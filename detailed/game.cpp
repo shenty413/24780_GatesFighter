@@ -9,6 +9,7 @@
 #include "fssimplewindow.h"
 #include "ysglfontdata.h"
 #include "time.h"
+#include "HP.h"
 
 void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
                           YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running,
