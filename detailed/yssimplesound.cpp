@@ -4,7 +4,7 @@
 #include "yssimplesound.h"
 
 YsSoundPlayer *YsSoundPlayer::currentPlayer=nullptr;
-
+#pragma warning(disable: 4996)
 YsSoundPlayer::YsSoundPlayer()
 {
 	api=CreateAPISpecificData();

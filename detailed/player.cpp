@@ -5,6 +5,7 @@
 #include "fssimplewindow.h"
 
 #include "player.h"
+#include "header.h"
 
 void drawhead(double x,double y, int facialstate);
 void drawneck(double x, double y);
@@ -75,6 +76,7 @@ void Player::SetCharacter(int charNo){
     }
 }
 
+
 int Player::getAttack(){
     return attack;
 }
@@ -85,6 +87,25 @@ int Player::getLeftBoundary(){
 
 int Player::getRightBoundary(){
     return x + 100;
+}
+
+
+
+/////get the BanMoveBoundary
+int Player::getLeftBanMoveBoundary() {
+	return x - 110;
+}
+
+int Player::getRightBanMoveBoundary() {
+	return x + 110;
+}
+
+int Player::getUpperBanMoveBoundary() {
+	return y - neckl-2*headr;
+}
+
+int Player::getLowerBanMoveBoundary() {
+	return y + bodyl + 2*legl;
 }
 
 int Player::getX() const 
@@ -98,14 +119,24 @@ int Player::getY() const
 }
 
 
+
 void Player::Move(){
+
+
+	//if (getLeftBanMoveBoundary() <=opponent.getRightBanMoveBoundary() && getRightBanMoveBoundary()  > opponent.getLeftBanMoveBoundary() && getUpperBanMoveBoundary()<=opponent.getLowerBanMoveBoundary() && getLowerBanMoveBoundary() >= opponent.getUpperBanMoveBoundary())
+
+
     if (direction == 1){
 		x -= vx * dt;
+		
     }
     else{
 		x += vx * dt;
+	
     }
     walkState = 1;
+
+
 }
 
 void Player::ResetWalkState(){
