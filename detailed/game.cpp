@@ -83,50 +83,50 @@ void Game::setKo(void) {
 }
 
 void Game::DrawHpBar(int hp1, int hp2) {
-
-	double p1 = (double)hp1 / 100;
-	double p2 = (double)hp2 / 100;
-
-	glColor3ub(0, 255, 0);
-	glRasterPos2i(80, 100);
-	YsGlDrawFontBitmap20x32("fighter1");
-	glRasterPos2i(800, 100);
-	YsGlDrawFontBitmap20x32("fighter2");
-	/* draw HP bar of p1 */
-	glColor3ub(0, 0, 0);
-	glBegin(GL_LINE_LOOP);
-	glVertex2i(10, 20);
-	glVertex2i(10, 50);
-	glVertex2i(310, 50);
-	glVertex2i(310, 20);
-	glEnd();
-
-	/* red part */
-	glColor3ub(255, 0, 0);
-	glBegin(GL_QUADS);
-	glVertex2i(10, 20);
-	glVertex2i(10, 50);
-	glVertex2i(310 * p1, 50);
-	glVertex2i(310 * p1, 20);
-	glEnd();
-
-	/* draw HP bar of p2 */
-	glColor3ub(0, 0, 0);
-	glBegin(GL_LINE_LOOP);
-	glVertex2i(1014, 20);
-	glVertex2i(1014, 50);
-	glVertex2i(714, 50);
-	glVertex2i(714, 20);
-	glEnd();
-
-	/* draw red part */
-	glColor3ub(255, 0, 0);
-	glBegin(GL_QUADS);
-	glVertex2i(1014, 20);
-	glVertex2i(1014, 50);
-	glVertex2i(714 + 300 * (1 - p2), 50);
-	glVertex2i(714 + 300 * (1 - p2), 20);
-	glEnd();
+    
+    double p1 = (double)hp1 / 100;
+    double p2 = (double)hp2 / 100;
+    
+    glColor3ub(0, 255, 0);
+    glRasterPos2i(80, 100);
+    YsGlDrawFontBitmap20x32("fighter1");
+    glRasterPos2i(800, 100);
+    YsGlDrawFontBitmap20x32("fighter2");
+    /* draw HP bar of p1 */
+    glColor3ub(0, 0, 0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(10, 20);
+    glVertex2i(10, 50);
+    glVertex2i(310, 50);
+    glVertex2i(310, 20);
+    glEnd();
+    
+    /* red part */
+    glColor3ub(255, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex2i(10, 20);
+    glVertex2i(10, 50);
+    glVertex2i(310 * p1, 50);
+    glVertex2i(310 * p1, 20);
+    glEnd();
+    
+    /* draw HP bar of p2 */
+    glColor3ub(0, 0, 0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(1014, 20);
+    glVertex2i(1014, 50);
+    glVertex2i(714, 50);
+    glVertex2i(714, 20);
+    glEnd();
+    
+    /* draw red part */
+    glColor3ub(255, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex2i(1014, 20);
+    glVertex2i(1014, 50);
+    glVertex2i(714 + 300 * (1 - p2), 50);
+    glVertex2i(714 + 300 * (1 - p2), 20);
+    glEnd();
 };
 
 void Game::Run(){
@@ -359,6 +359,7 @@ void Game::Run(){
 
 		// draw hp bars 
 		DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
+        DrawTimer(decade, unit);
 		FsSwapBuffers();
 		FsSleep(10);
 
