@@ -1,6 +1,7 @@
 #include "game.h"
 #include "fssimplewindow.h"
 #include "player.h"
+#include "HP.h"
 #include <time.h>
 #include "fssimplewindow.h"
 #include "yssimplesound.h"
@@ -331,8 +332,22 @@ void Game::Run(){
 		*/
 		p1.ResetWalkState();
 		p2.ResetWalkState();
+
+		
+		// hp swap mechanism
+		if (p1.getX() < p2.getX()) 
+		{
+			hp_bar.SetHP_left(p1.GetHP());
+			hp_bar.SetHP_right(p2.GetHP());
+		}
+		else 
+		{
+			hp_bar.SetHP_left(p2.GetHP());
+			hp_bar.SetHP_right(p1.GetHP());
+		}
+
 		// draw hp bars 
-		DrawHpBar(p1.GetHP(), p2.GetHP());
+		DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
 		FsSwapBuffers();
 		FsSleep(10);
 
@@ -340,12 +355,12 @@ void Game::Run(){
 		// termination flags 
 
 		// count time, check if time runs out
-		int current_time = (int)time(NULL);
+		/*int current_time = (int)time(NULL);
 		if (current_time - timer >= 20) 
 		{
 			termination = 1;
 			setTimeout(); 
-		}
+		}*/
             
 
 		// check if either player's hp is 0 

@@ -24,6 +24,8 @@ public:
 	int getAttack();
 	int getLeftBoundary();
 	int getRightBoundary();
+	int getX() const;
+	int getY() const; 
 
 	/*
 		The following functions are modifiers based on different moves that the players can do:
@@ -52,7 +54,8 @@ public:
 	bool IfPunchHit(Player &opponent); // 
 	void ChangeHitState(); // change the isHit state of a player if he/she is hit by the opponent
 	void HPchange(const int amount);
-	int GetHP(void);
+	void setHP(int health_power);
+	int GetHP(void) const;
 
 
 	void Draw();
