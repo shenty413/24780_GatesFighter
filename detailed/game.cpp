@@ -369,6 +369,7 @@ void Game::Run(){
 			termination = 1; 
 			setKo(); 
 		}
+		printf("test\n");
 
     }
     
