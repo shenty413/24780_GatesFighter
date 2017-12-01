@@ -27,15 +27,15 @@ public:
 	int getAttack();
 	int getLeftBoundary();
 	int getRightBoundary();
-<<<<<<< HEAD
+
 	int getLowerBanMoveBoundary();
 	int getUpperBanMoveBoundary();
 	int getLeftBanMoveBoundary();
 	int getRightBanMoveBoundary();
-=======
+
 	int getX(void) const; 
 	int getY(void) const; 
->>>>>>> 8be5c612ec4cb5bde7d16f61680d3d0c70b4aea4
+
 
 	/*
 		The following functions are modifiers based on different moves that the players can do:

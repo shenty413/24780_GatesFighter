@@ -89,7 +89,7 @@ int Player::getRightBoundary(){
     return x + 100;
 }
 
-<<<<<<< HEAD
+
 
 /////get the BanMoveBoundary
 int Player::getLeftBanMoveBoundary() {
@@ -107,7 +107,7 @@ int Player::getUpperBanMoveBoundary() {
 int Player::getLowerBanMoveBoundary() {
 	return y + bodyl + 2*legl;
 }
-=======
+
 int Player::getX() const 
 {
 	return x; 
@@ -118,7 +118,7 @@ int Player::getY() const
 	return y;
 }
 
->>>>>>> 8be5c612ec4cb5bde7d16f61680d3d0c70b4aea4
+
 
 void Player::Move(){
 
