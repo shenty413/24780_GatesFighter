@@ -72,16 +72,6 @@ int Player::getRightBoundary(){
     return x + 100;
 }
 
-int Player::getX() const 
-{
-	return x; 
-}
-
-int Player::getY() const
-{
-	return y;
-}
-
 void Player::Move(){
     if (direction == 1){
 		x -= vx * dt;
@@ -184,14 +174,9 @@ void Player::HPchange(const int amount){
     printf("HP: %d\n",hp);
 }
 
-int Player::GetHP(void) const{
+int Player::GetHP(void) {
 	return hp;
 }
-
-void Player::setHP(int health_power) 
-{
-	hp = health_power;
-};
 
 void Player::Draw(){
     // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);

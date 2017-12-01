@@ -6,13 +6,11 @@
 #include "game.h"
 #include "arm.h"
 #include "leg.h"
-#include "HP.h"
 
 class Game
 {
     Player p1;
     Player p2;
-	HP hp_bar; 
 protected:
 	bool exit = false;
 	bool timeout = false;
