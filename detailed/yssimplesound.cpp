@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "yssimplesound.h"
-#pragma warning(disable: 4996)
+
 YsSoundPlayer *YsSoundPlayer::currentPlayer=nullptr;
 
 YsSoundPlayer::YsSoundPlayer()

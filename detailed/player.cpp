@@ -26,7 +26,7 @@ const bool default_dir = 1;
 const double dt = 0.01;
 
 
-Player::Player(void){
+Player::Player(){
     x = default_x;
     y = default_y;
     hp = default_hp;
@@ -52,6 +52,7 @@ Player::Player(int No){
     walkState = 0;
     // test 
 }
+
 
 void Player::SetCharacter(int charNo){
     switch (charNo) {
@@ -198,7 +199,6 @@ void Player::Draw(){
         if (T < 5 && (T == 0 || T - Ttemp > 0)){
             Ttemp = T;
             T++;
-            // printf("%d\n", IsHit);
         }else{
             T--;
             if (T == 0){

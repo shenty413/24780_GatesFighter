@@ -19,6 +19,7 @@ public:
 	Player(void); // initialize a player
 	Player(int No);
 	// test
+
     
     void SetCharacter(int charNo);
 
