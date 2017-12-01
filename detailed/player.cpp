@@ -87,6 +87,17 @@ int Player::getRightBoundary(){
     return x + 100;
 }
 
+int Player::getX() const 
+{
+	return x; 
+}
+
+int Player::getY() const
+{
+	return y;
+}
+
+
 void Player::Move(){
     if (direction == 1){
 		x -= vx * dt;
