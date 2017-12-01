@@ -11,6 +11,7 @@ class Game
 {
     Player p1 {1};
     Player p2 {2};
+    // test 
 protected:
 	bool exit = false;
 	bool timeout = false;

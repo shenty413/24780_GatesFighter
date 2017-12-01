@@ -50,6 +50,7 @@ Player::Player(int No){
     Ttemp = 0;
     punchState = 0;
     walkState = 0;
+    // test 
 }
 
 void Player::SetCharacter(int charNo){
