@@ -10,9 +10,10 @@
 
 class Game
 {
-    Player p1;
-    Player p2;
+    Player p1 {1};
+    Player p2 {2};
 	HP hp_bar; 
+
 protected:
 	bool exit = false;
 	bool timeout = false;
