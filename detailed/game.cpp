@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "fssimplewindow.h"
 #include "ysglfontdata.h"
+#include "time.h"
 
 void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
                           YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running,
@@ -86,44 +87,44 @@ void Game::DrawHpBar(int hp1, int hp2) {
 	double p2 = (double)hp2 / 100;
 
 	glColor3ub(0, 255, 0);
-	glRasterPos2i(0, 70);
+	glRasterPos2i(80, 100);
 	YsGlDrawFontBitmap20x32("fighter1");
-	glRasterPos2i(640, 70);
+	glRasterPos2i(800, 100);
 	YsGlDrawFontBitmap20x32("fighter2");
 	/* draw HP bar of p1 */
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINE_LOOP);
-	glVertex2i(0, 0);
-	glVertex2i(0, 30);
-	glVertex2i(200, 30);
-	glVertex2i(200, 0);
+	glVertex2i(10, 20);
+	glVertex2i(10, 50);
+	glVertex2i(310, 50);
+	glVertex2i(310, 20);
 	glEnd();
 
 	/* red part */
 	glColor3ub(255, 0, 0);
 	glBegin(GL_QUADS);
-	glVertex2i(0, 0);
-	glVertex2i(0, 30);
-	glVertex2i(200 * (1 - p1), 30);
-	glVertex2i(200 * (1 - p1), 0);
+	glVertex2i(10, 20);
+	glVertex2i(10, 50);
+	glVertex2i(310 * p1, 50);
+	glVertex2i(310 * p1, 20);
 	glEnd();
 
 	/* draw HP bar of p2 */
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINE_LOOP);
-	glVertex2i(800, 0);
-	glVertex2i(800, 30);
-	glVertex2i(600, 30);
-	glVertex2i(600, 0);
+	glVertex2i(1014, 20);
+	glVertex2i(1014, 50);
+	glVertex2i(714, 50);
+	glVertex2i(714, 20);
 	glEnd();
 
 	/* draw red part */
 	glColor3ub(255, 0, 0);
 	glBegin(GL_QUADS);
-	glVertex2i(800, 0);
-	glVertex2i(800, 30);
-	glVertex2i(600 + 200 * (1 - p2), 30);
-	glVertex2i(600 + 200 * (1 - p2), 0);
+	glVertex2i(1014, 20);
+	glVertex2i(1014, 50);
+	glVertex2i(714 + 300 * (1 - p2), 50);
+	glVertex2i(714 + 300 * (1 - p2), 20);
 	glEnd();
 };
 
@@ -137,15 +138,25 @@ void Game::Run(){
 
     musicplayer(player, punch, moaning, running, backgnd);
 	
-
+    Time timer(1, 30);
     int termination = 0;
     int punch_timer = 0;
     int punch_process = 0;
-    int timer = (int)time(NULL);
+    int decade, unit;
+    timer.setTime();
+    //printf("sum = %lf", timer.sum);
+   // int timer = (int)time(NULL);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     //FsOpenWindow(16,16,800,600,1);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     while (termination==0) {
+        timer.tictoc();
+        decade = (int)(timer.sum + 1) / 10;
+        unit = (int)(timer.sum + 1) - decade * 10;
+        if (decade == 0 && unit == 0) {
+            termination = 1;
+            setTimeout();
+        }
         FsPollDevice();
         int key = FsInkey();
         switch (key) {
@@ -331,8 +342,12 @@ void Game::Run(){
 		*/ 
         p1.ResetWalkState();
         p2.ResetWalkState();
-		// draw hp bars 
+		// draw hp bars
+        
 		DrawHpBar(p1.GetHP(), p2.GetHP());
+//        glColor3b(0, 255, 0);
+//        glRasterPos2i(350, 30);
+        DrawTimer(decade, unit);
         FsSwapBuffers();
         FsSleep(10);
         
