@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include "fssimplewindow.h"
 #include "ysglfontdata.h"
+#include "time.h"
+#include "HP.h"
 
 void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
                           YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running,
@@ -86,44 +88,44 @@ void Game::DrawHpBar(int hp1, int hp2) {
 	double p2 = (double)hp2 / 100;
 
 	glColor3ub(0, 255, 0);
-	glRasterPos2i(0, 70);
+	glRasterPos2i(80, 100);
 	YsGlDrawFontBitmap20x32("fighter1");
-	glRasterPos2i(640, 70);
+	glRasterPos2i(800, 100);
 	YsGlDrawFontBitmap20x32("fighter2");
 	/* draw HP bar of p1 */
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINE_LOOP);
-	glVertex2i(0, 0);
-	glVertex2i(0, 30);
-	glVertex2i(200, 30);
-	glVertex2i(200, 0);
+	glVertex2i(10, 20);
+	glVertex2i(10, 50);
+	glVertex2i(310, 50);
+	glVertex2i(310, 20);
 	glEnd();
 
 	/* red part */
 	glColor3ub(255, 0, 0);
 	glBegin(GL_QUADS);
-	glVertex2i(0, 0);
-	glVertex2i(0, 30);
-	glVertex2i(200 * (1 - p1), 30);
-	glVertex2i(200 * (1 - p1), 0);
+	glVertex2i(10, 20);
+	glVertex2i(10, 50);
+	glVertex2i(310 * p1, 50);
+	glVertex2i(310 * p1, 20);
 	glEnd();
 
 	/* draw HP bar of p2 */
 	glColor3ub(0, 0, 0);
 	glBegin(GL_LINE_LOOP);
-	glVertex2i(800, 0);
-	glVertex2i(800, 30);
-	glVertex2i(600, 30);
-	glVertex2i(600, 0);
+	glVertex2i(1014, 20);
+	glVertex2i(1014, 50);
+	glVertex2i(714, 50);
+	glVertex2i(714, 20);
 	glEnd();
 
 	/* draw red part */
 	glColor3ub(255, 0, 0);
 	glBegin(GL_QUADS);
-	glVertex2i(800, 0);
-	glVertex2i(800, 30);
-	glVertex2i(600 + 200 * (1 - p2), 30);
-	glVertex2i(600 + 200 * (1 - p2), 0);
+	glVertex2i(1014, 20);
+	glVertex2i(1014, 50);
+	glVertex2i(714 + 300 * (1 - p2), 50);
+	glVertex2i(714 + 300 * (1 - p2), 20);
 	glEnd();
 };
 
@@ -137,14 +139,18 @@ void Game::Run(){
 
     musicplayer(player, punch, moaning, running, backgnd);
 	
-
+    Time timer(1, 30);
     int termination = 0;
     int punch_timer = 0;
     int punch_process = 0;
-    int timer = (int)time(NULL);
+    int decade, unit;
+    timer.setTime();
+    //printf("sum = %lf", timer.sum);
+   // int timer = (int)time(NULL);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     //FsOpenWindow(16,16,800,600,1);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+<<<<<<< HEAD
 	while (termination == 0) {
 		FsPollDevice();
 		int key = FsInkey();
@@ -307,37 +313,162 @@ void Game::Run(){
 			player.Stop(backgnd);
 			break;
 		}
+=======
+    while (termination==0) {
+        timer.tictoc();
+        decade = (int)(timer.sum + 1) / 10;
+        unit = (int)(timer.sum + 1) - decade * 10;
+        if (decade == 0 && unit == 0) {
+            termination = 1;
+            setTimeout();
+        }
+        FsPollDevice();
+        int key = FsInkey();
+        switch (key) {
+            case FSKEY_ESC: // exit the game
+                setExit();
+                termination = 1;
+                break;
+                
+                // player 1 moves
+            case FSKEY_W: // jump
+				// if not jumping, jump
+				if (p1.IsJumping()!=true) 
+				{
+					p1.InitializeJumping(); 
+					/* play move sound */
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
+				
+                break;
+            case FSKEY_A: // move left
+				// if punching, cannot move
+				if (p1.IsPunching() != true) 
+				{
+					p1.ChangeDirc(1);
+					p1.Move(); 
+					
+					/* if moved, play running sound */
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
+               
+                break;
+            case FSKEY_D: // move right
+				// if punching, cannot move
+				if (p1.IsPunching() != true)
+				{
+					p1.ChangeDirc(0);
+					p1.Move();
+					
+					/* if moved, play running sound */
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
+                break;
+
+            case FSKEY_S: // punch
+				// if not punching, punch 
+				if (p1.IsPunching() != true)
+				{
+					p1.InitializePunching();
+					/* if punch, play punch sound */
+					player.Stop(punch);
+					player.PlayOneShot(punch);
+				}
+                break;
+
+				// player 2 moves
+            case FSKEY_I: // jump
+				// if not jumping, jump
+				if (p2.IsJumping() != true)
+				{
+					p2.InitializeJumping();
+					/* play move sound */
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
+				break;
+
+            case FSKEY_J: // move left
+				if (p2.IsPunching() != true)
+				{
+					p2.ChangeDirc(1);
+					p2.Move();
+					// if punching, cannot move
+					/* if moved, play running sound */
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
+				break;
+
+            case FSKEY_L: // move right
+				// if punching, cannot move
+				if (p2.IsPunching() != true)
+				{
+					p2.ChangeDirc(0);
+					p2.Move();
+					/* if moved, play running sound */
+					player.Stop(running);
+					player.PlayOneShot(running);
+				}
+				break;
+
+            case FSKEY_K: // punch
+				// if not punching, punch 
+				if (p2.IsPunching() != true)
+				{
+					p2.InitializePunching();
+					/* if punch, play punch sound */
+					player.Stop(punch);
+					player.PlayOneShot(punch);
+				}
+				break;
+
+				// music functions 
+				/* press Key B to play background music*/
+			case FSKEY_B:
+				player.PlayBackground(backgnd);
+				break;
+
+				/* press key P to stop background music*/
+			case FSKEY_P:
+				player.Stop(backgnd);
+				break;
+        }
+>>>>>>> 8be5c612ec4cb5bde7d16f61680d3d0c70b4aea4
 
 		// player motions and logic behind interactions  
-		// player 1 punching
-		if (p1.IsPunching())
-		{
-			printf("p1 is punching");
-			p1.Punch();
+        // player 1 punching
+        if (p1.IsPunching())
+        {
+            printf("p1 is punching");
+            p1.Punch();
 
 			if (p1.IfPunchHit(p2) && p2.GetHitState() != true)
-			{
-				p2.ChangeHitState();
-				p2.HPchange(p1.getAttack());
-				/* if hit, play moaning sound */
-				player.Stop(moaning);
-				player.PlayOneShot(moaning);
-			}
+            {
+				p2.ChangeHitState(); 
+				p2.HPchange(p1.getAttack()); 
+                /* if hit, play moaning sound */
+                player.Stop(moaning);
+                player.PlayOneShot(moaning);
+            }
 
-		}
-		// player 1 jumping
-		if (p1.IsJumping())
-		{
+        }
+        // player 1 jumping
+        if (p1.IsJumping())
+        {
 			p1.Jump();
 
 			// check if jumping
-			p1.CheckHitGround();
-
-		}
-		// player 2 punching
-		if (p2.IsPunching())
-		{
-			printf("p2 is punching");
+			p1.CheckHitGround(); 
+				
+        }
+        // player 2 punching
+        if (p2.IsPunching())
+        {
+            printf("p2 is punching");
 			p2.Punch();
 
 			if (p2.IfPunchHit(p1) && p1.GetHitState() != true)
@@ -349,18 +480,18 @@ void Game::Run(){
 				player.PlayOneShot(moaning);
 			}
 
-		}
-		// player 2 jumping
-		if (p2.IsJumping())
-		{
+        }
+        // player 2 jumping
+        if (p2.IsJumping())
+        {
 			p2.Jump();
 			p2.CheckHitGround();
-		}
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-		p1.Draw();
-		p2.Draw();
-
+        p1.Draw();
+        p2.Draw();
+        
 		// boundary 
 		/*
 		glColor3d(1, 0, 0);
@@ -377,8 +508,22 @@ void Game::Run(){
 		*/
 		p1.ResetWalkState();
 		p2.ResetWalkState();
+
+		
+		// hp swap mechanism
+		if (p1.getX() < p2.getX()) 
+		{
+			hp_bar.SetHP_left(p1.GetHP());
+			hp_bar.SetHP_right(p2.GetHP());
+		}
+		else 
+		{
+			hp_bar.SetHP_left(p2.GetHP());
+			hp_bar.SetHP_right(p1.GetHP());
+		}
+
 		// draw hp bars 
-		DrawHpBar(p1.GetHP(), p2.GetHP());
+		DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
 		FsSwapBuffers();
 		FsSleep(10);
 
@@ -386,12 +531,12 @@ void Game::Run(){
 		// termination flags 
 
 		// count time, check if time runs out
-		int current_time = (int)time(NULL);
+		/*int current_time = (int)time(NULL);
 		if (current_time - timer >= 20) 
 		{
 			termination = 1;
 			setTimeout(); 
-		}
+		}*/
             
 
 		// check if either player's hp is 0 
@@ -400,7 +545,7 @@ void Game::Run(){
 			termination = 1; 
 			setKo(); 
 		}
-
+		printf("test\n");
     }
     
 }
