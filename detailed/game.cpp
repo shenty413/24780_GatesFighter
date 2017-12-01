@@ -329,7 +329,8 @@ void Game::Run(){
         glVertex2i(p2.getRightBoundary(), 1000);
         glEnd();
 		*/ 
-        
+        p1.ResetWalkState();
+        p2.ResetWalkState();
 		// draw hp bars 
 		DrawHpBar(p1.GetHP(), p2.GetHP());
         FsSwapBuffers();

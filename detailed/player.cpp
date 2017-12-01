@@ -36,6 +36,7 @@ Player::Player(){
     T = 0;
     Ttemp = 0;
     punchState = 0;
+    walkState = 0;
 }
 
 void Player::SetCharacter(int charNo){
@@ -78,6 +79,11 @@ void Player::Move(){
     else{
 		x += vx * dt;
     }
+    walkState = 1;
+}
+
+void Player::ResetWalkState(){
+    walkState = 0;
 }
 
 // dirc = 1, left; dirc = 0, right
