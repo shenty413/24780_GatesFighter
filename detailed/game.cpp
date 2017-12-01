@@ -145,154 +145,153 @@ void Game::Run(){
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     //FsOpenWindow(16,16,800,600,1);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    while (termination==0) {
-        FsPollDevice();
-        int key = FsInkey();
-        switch (key) {
-            case FSKEY_ESC: // exit the game
-                setExit();
-                termination = 1;
-                break;
-                
-                // player 1 moves
-            case FSKEY_W: // jump
-				// if not jumping, jump
-				if (p1.IsJumping()!=true) 
-				{
-					p1.InitializeJumping(); 
-					/* play move sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-				
-                break;
-            case FSKEY_A: // move left
+	while (termination == 0) {
+		FsPollDevice();
+		int key = FsInkey();
+		switch (key) {
+		case FSKEY_ESC: // exit the game
+			setExit();
+			termination = 1;
+			break;
+
+			// player 1 moves
+		case FSKEY_W: // jump
+			// if not jumping, jump
+			if (p1.IsJumping() != true)
+			{
+				p1.InitializeJumping();
+				/* play move sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+
+			break;
+		case FSKEY_A: // move left
+			// if punching, cannot move
+			if (p1.IsPunching() != true)
+			{
+				p1.ChangeDirc(1);
+				p1.Move();
+
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+
+			break;
+		case FSKEY_D: // move right
+			// if punching, cannot move
+			if (p1.IsPunching() != true)
+			{
+				p1.ChangeDirc(0);
+				p1.Move();
+
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_S: // punch
+			// if not punching, punch 
+			if (p1.IsPunching() != true)
+			{
+				p1.InitializePunching();
+				/* if punch, play punch sound */
+				player.Stop(punch);
+				player.PlayOneShot(punch);
+			}
+			break;
+
+			// player 2 moves
+		case FSKEY_I: // jump
+			// if not jumping, jump
+			if (p2.IsJumping() != true)
+			{
+				p2.InitializeJumping();
+				/* play move sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_J: // move left
+			if (p2.IsPunching() != true)
+			{
+				p2.ChangeDirc(1);
+				p2.Move();
 				// if punching, cannot move
-				if (p1.IsPunching() != true) 
-				{
-					p1.ChangeDirc(1);
-					p1.Move(); 
-					
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-               
-                break;
-            case FSKEY_D: // move right
-				// if punching, cannot move
-				if (p1.IsPunching() != true)
-				{
-					p1.ChangeDirc(0);
-					p1.Move();
-					
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-                break;
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
 
-            case FSKEY_S: // punch
-				// if not punching, punch 
-				if (p1.IsPunching() != true)
-				{
-					p1.InitializePunching();
-					/* if punch, play punch sound */
-					player.Stop(punch);
-					player.PlayOneShot(punch);
-				}
-                break;
+		case FSKEY_L: // move right
+			// if punching, cannot move
+			if (p2.IsPunching() != true)
+			{
+				p2.ChangeDirc(0);
+				p2.Move();
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
 
-				// player 2 moves
-            case FSKEY_I: // jump
-				// if not jumping, jump
-				if (p2.IsJumping() != true)
-				{
-					p2.InitializeJumping();
-					/* play move sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-				break;
+		case FSKEY_K: // punch
+			// if not punching, punch 
+			if (p2.IsPunching() != true)
+			{
+				p2.InitializePunching();
+				/* if punch, play punch sound */
+				player.Stop(punch);
+				player.PlayOneShot(punch);
+			}
+			break;
 
-            case FSKEY_J: // move left
-				if (p2.IsPunching() != true)
-				{
-					p2.ChangeDirc(1);
-					p2.Move();
-					// if punching, cannot move
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-				break;
+			// music functions 
+			/* press Key B to play background music*/
+		case FSKEY_B:
+			player.PlayBackground(backgnd);
+			break;
 
-            case FSKEY_L: // move right
-				// if punching, cannot move
-				if (p2.IsPunching() != true)
-				{
-					p2.ChangeDirc(0);
-					p2.Move();
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-				break;
-
-            case FSKEY_K: // punch
-				// if not punching, punch 
-				if (p2.IsPunching() != true)
-				{
-					p2.InitializePunching();
-					/* if punch, play punch sound */
-					player.Stop(punch);
-					player.PlayOneShot(punch);
-				}
-				break;
-
-				// music functions 
-				/* press Key B to play background music*/
-			case FSKEY_B:
-				player.PlayBackground(backgnd);
-				break;
-
-				/* press key P to stop background music*/
-			case FSKEY_P:
-				player.Stop(backgnd);
-				break;
-        }
+			/* press key P to stop background music*/
+		case FSKEY_P:
+			player.Stop(backgnd);
+			break;
+		}
 
 		// player motions and logic behind interactions  
-        // player 1 punching
-        if (p1.IsPunching())
-        {
-            printf("p1 is punching");
-            p1.Punch();
+		// player 1 punching
+		if (p1.IsPunching())
+		{
+			printf("p1 is punching");
+			p1.Punch();
 
 			if (p1.IfPunchHit(p2) && p2.GetHitState() != true)
-            {
-				p2.ChangeHitState(); 
-				p2.HPchange(p1.getAttack()); 
-                /* if hit, play moaning sound */
-                player.Stop(moaning);
-                player.PlayOneShot(moaning);
+			{
 				p2.ChangeHitState();
-            }
+				p2.HPchange(p1.getAttack());
+				/* if hit, play moaning sound */
+				player.Stop(moaning);
+				player.PlayOneShot(moaning);
+			}
 
-        }
-        // player 1 jumping
-        if (p1.IsJumping())
-        {
+		}
+		// player 1 jumping
+		if (p1.IsJumping())
+		{
 			p1.Jump();
 
 			// check if jumping
-			p1.CheckHitGround(); 
-				
-        }
-        // player 2 punching
-        if (p2.IsPunching())
-        {
-            printf("p2 is punching");
+			p1.CheckHitGround();
+
+		}
+		// player 2 punching
+		if (p2.IsPunching())
+		{
+			printf("p2 is punching");
 			p2.Punch();
 
 			if (p2.IfPunchHit(p1) && p1.GetHitState() != true)
@@ -302,46 +301,60 @@ void Game::Run(){
 				/* if hit, play moaning sound */
 				player.Stop(moaning);
 				player.PlayOneShot(moaning);
-				p1.ChangeHitState();
 			}
 
-        }
-        // player 2 jumping
-        if (p2.IsJumping())
-        {
+		}
+		// player 2 jumping
+		if (p2.IsJumping())
+		{
 			p2.Jump();
 			p2.CheckHitGround();
-        }
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+		}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        p1.Draw();
-        p2.Draw();
-        
+		p1.Draw();
+		p2.Draw();
+
 		// boundary 
 		/*
-        glColor3d(1, 0, 0);
-        glBegin(GL_LINES);
-        glVertex2i(p2.getLeftBoundary(), 0);
-        glVertex2i(p2.getLeftBoundary(), 1000);
-        glEnd();
-        
-        glColor3d(0, 0, 1);
-        glBegin(GL_LINES);
-        glVertex2i(p2.getRightBoundary(), 0);
-        glVertex2i(p2.getRightBoundary(), 1000);
-        glEnd();
-		*/ 
-        p1.ResetWalkState();
-        p2.ResetWalkState();
+		glColor3d(1, 0, 0);
+		glBegin(GL_LINES);
+		glVertex2i(p2.getLeftBoundary(), 0);
+		glVertex2i(p2.getLeftBoundary(), 1000);
+		glEnd();
+
+		glColor3d(0, 0, 1);
+		glBegin(GL_LINES);
+		glVertex2i(p2.getRightBoundary(), 0);
+		glVertex2i(p2.getRightBoundary(), 1000);
+		glEnd();
+		*/
+		p1.ResetWalkState();
+		p2.ResetWalkState();
 		// draw hp bars 
 		DrawHpBar(p1.GetHP(), p2.GetHP());
-        FsSwapBuffers();
-        FsSleep(10);
-        
-        // count time, check if time runs out
-        int current_time = (int)time(NULL);
-        //if (current_time - timer >= 100)
-          //  termination = 1;
+		FsSwapBuffers();
+		FsSleep(10);
+
+
+		// termination flags 
+
+		// count time, check if time runs out
+		int current_time = (int)time(NULL);
+		if (current_time - timer >= 20) 
+		{
+			termination = 1;
+			setTimeout(); 
+		}
+            
+
+		// check if either player's hp is 0 
+		if (p1.GetHP() <= 0 || p2.GetHP() <= 0) 
+		{
+			termination = 1; 
+			setKo(); 
+		}
+
     }
     
 }

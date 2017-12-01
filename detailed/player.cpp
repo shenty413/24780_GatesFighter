@@ -26,8 +26,21 @@ const bool default_dir = 1;
 const double dt = 0.01;
 
 
-Player::Player(){
+Player::Player(void){
     x = default_x;
+    y = default_y;
+    hp = default_hp;
+    attack = default_attack;
+    direction = default_dir;
+    ay = 2000;
+    T = 0;
+    Ttemp = 0;
+    punchState = 0;
+    walkState = 0;
+}
+
+Player::Player(int No){
+    x = default_x+(No-1)*400;
     y = default_y;
     hp = default_hp;
     attack = default_attack;
@@ -212,6 +225,7 @@ void Player::Draw(){
         if (T < 5 && (T == 0 || T - Ttemp > 0)){
             Ttemp = T;
             T++;
+            // printf("%d\n", IsHit);
         }else{
             T--;
             if (T == 0){
