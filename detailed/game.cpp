@@ -374,8 +374,8 @@ void Game::Run(){
         }
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-        p1.Draw();
-        p2.Draw();
+        p1.Draw(p2);
+        p2.Draw(p1);
         
 		// boundary 
 		/*

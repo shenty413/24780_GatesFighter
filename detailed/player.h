@@ -67,7 +67,7 @@ public:
 	int GetHP(void);
 
 
-	void Draw();
+	void Draw(Player &opponent);
 };
 
 #endif

@@ -193,7 +193,7 @@ void Player::Punch(void){
 }
 
 bool Player::IfPunchHit(Player &opponent){
-    int armLength = 300;
+    int armLength = 300*0.5;
     printf("Left Boundry: %d\n", opponent.getLeftBoundary());
     printf("Right Boundry: %d\n", opponent.getRightBoundary());
     printf("x: %d\n", x);
@@ -235,12 +235,16 @@ int Player::GetHP(void) {
 	return hp;
 }
 
-void Player::Draw(){
+void Player::Draw(Player &opponent){
     // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);
     if (punchState == 1){
         if (T < 5 && (T == 0 || T - Ttemp > 0)){
             Ttemp = T;
             T++;
+            if(T==4)
+            {
+                opponent.ChangeHitState();
+            }
         }else{
             T--;
             if (T == 0){
@@ -251,6 +255,18 @@ void Player::Draw(){
     //printf("T: %d, punchState: %d\n", T, punchState);
     //printf("x: %d, y: %d", x,y);
     
+    glColor3ub(0, 0, 0);
+    //glBegin(GL_TRIANGLE_FAN);
+    glBegin(GL_LINES);
+    glVertex2d(getRightBoundary(),0);
+    glVertex2d(getRightBoundary(),600);
+    glVertex2d(getLeftBoundary(),0);
+    glVertex2d(getLeftBoundary(),600);    
+    glEnd();
+
+
+
+
     arm.CalculateRightPart(x, y, direction, punchState, T);
     arm.CalculateLeftPart(x, y, direction, punchState, T);
     arm.DrawRightArm(x, y);
