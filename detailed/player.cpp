@@ -60,6 +60,7 @@ void Player::SetCharacter(int charNo){
     }
 }
 
+
 int Player::getAttack(){
     return attack;
 }
@@ -72,7 +73,33 @@ int Player::getRightBoundary(){
     return x + 100;
 }
 
-void Player::Move(){
+
+/////get the BanMoveBoundary
+int Player::getLeftBanMoveBoundary() {
+	return x - 200;
+}
+
+int Player::getRightBanMoveBoundary() {
+	return x + 200;
+}
+
+int Player::getUpperBanMoveBoundary() {
+	return y - 100;
+}
+
+int Player::getLowerBanMoveBoundary() {
+	return y + 200;
+}
+
+void Player::Move(Player &opponent){
+
+	int vtemp = vx;
+	//When player is on the left
+	if (getLeftBanMoveBoundary() <=opponent.getRightBanMoveBoundary()&& x > opponent.getLeftBanMoveBoundary() && getUpperBanMoveBoundary()<=opponent.getLowerBanMoveBoundary() && getLowerBanMoveBoundary() >= opponent.getUpperBanMoveBoundary())
+	{
+		vx = 0;
+	}
+
     if (direction == 1){
 		x -= vx * dt;
     }
@@ -80,6 +107,7 @@ void Player::Move(){
 		x += vx * dt;
     }
     walkState = 1;
+	vx = vtemp;
 }
 
 void Player::ResetWalkState(){
