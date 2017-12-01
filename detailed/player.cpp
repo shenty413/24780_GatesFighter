@@ -19,7 +19,7 @@ using namespace std;
 
 const int default_x = 300;
 const int default_y = 400;
-const int jumpSpeed = -10;
+const int jumpSpeed = -1000;
 const int default_hp = 100;
 const int default_attack = 10;
 const bool default_dir = 1;
@@ -94,8 +94,8 @@ void Player::ChangeDirc(bool dirc){
 void Player::InitializeJumping(void){
     jumpState = 1;
     ay = 2000;
-    vy = -400;
-    //vy = jumpSpeed;
+    // vy = -400;
+    vy = jumpSpeed;
 }
 
 bool Player::IsJumping(void){
@@ -112,7 +112,7 @@ void Player::Jump(void){
 }
 
 void Player::CheckHitGround(void){
-    if (vy > 400 && jumpState){
+    if (y > 400 && jumpState){
         ay = 0;
         vy = 0;
         y = 400;
