@@ -86,6 +86,17 @@ void Game::DrawHpBar(int hp1, int hp2) {
     
     double p1 = (double)hp1 / 100;
     double p2 = (double)hp2 / 100;
+
+    if(p1>p2)
+    {
+    	winner = 1;
+    }else if(p1<p2)
+    {
+    	winner = 2;
+    }else
+    {
+    	winner = 0;
+    }
     
     glColor3ub(0, 255, 0);
     glRasterPos2i(80, 100);
@@ -128,6 +139,10 @@ void Game::DrawHpBar(int hp1, int hp2) {
     glVertex2i(714 + 300 * (1 - p2), 20);
     glEnd();
 };
+
+int Game::getWinner(void){
+	return winner;
+}
 
 void Game::Run(){
 

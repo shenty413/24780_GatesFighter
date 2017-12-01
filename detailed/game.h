@@ -18,6 +18,7 @@ protected:
 	bool exit = false;
 	bool timeout = false;
 	bool ko = false; 
+	int winner;
 public:
     void Run(void);
     void SetCharacter(int pn1, int pn2); // player No 1 and 2
@@ -28,6 +29,7 @@ public:
 	void setTimeout(void); // set timeout flag
 	void setKo(void); // set ko flag
 	void DrawHpBar(int hp1, int hp2);
+	int getWinner(void);
 };
 
 #endif
