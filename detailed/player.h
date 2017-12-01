@@ -16,7 +16,8 @@ protected:
     Body body;
     
 public:
-	Player(); // initialize a player
+	Player(void); // initialize a player
+	Player(int No);
     
     void SetCharacter(int charNo);
 
