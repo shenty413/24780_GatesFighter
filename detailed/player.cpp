@@ -255,6 +255,9 @@ void Player::Draw(Player &opponent){
     //printf("T: %d, punchState: %d\n", T, punchState);
     //printf("x: %d, y: %d", x,y);
     
+
+    // draw left and right boundary
+    // /*
     glColor3ub(0, 0, 0);
     //glBegin(GL_TRIANGLE_FAN);
     glBegin(GL_LINES);
@@ -263,7 +266,7 @@ void Player::Draw(Player &opponent){
     glVertex2d(getLeftBoundary(),0);
     glVertex2d(getLeftBoundary(),600);    
     glEnd();
-
+    // */
 
 
 
