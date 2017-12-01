@@ -150,129 +150,170 @@ void Game::Run(){
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     //FsOpenWindow(16,16,800,600,1);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    while (termination==0) {
-        timer.tictoc();
-        decade = (int)(timer.sum + 1) / 10;
-        unit = (int)(timer.sum + 1) - decade * 10;
-        if (decade == 0 && unit == 0) {
-            termination = 1;
-            setTimeout();
-        }
-        FsPollDevice();
-        int key = FsInkey();
-        switch (key) {
-            case FSKEY_ESC: // exit the game
-                setExit();
-                termination = 1;
-                break;
-                
-                // player 1 moves
-            case FSKEY_W: // jump
-				// if not jumping, jump
-				if (p1.IsJumping()!=true) 
+
+	while (termination == 0) {
+		FsPollDevice();
+		int key = FsInkey();
+		switch (key) {
+		case FSKEY_ESC: // exit the game
+			setExit();
+			termination = 1;
+			break;
+
+			// player 1 moves
+		case FSKEY_W: // jump
+			// if not jumping, jump
+			if (p1.IsJumping() != true)
+			{
+				p1.InitializeJumping();
+				/* play move sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+
+			break;
+		case FSKEY_A: // move left
+			// if punching, cannot move
+			if (p1.IsPunching() != true)
+			{
+				p1.ChangeDirc(1);
+
+				if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
 				{
-					p1.InitializeJumping(); 
-					/* play move sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-				
-                break;
-            case FSKEY_A: // move left
-				// if punching, cannot move
-				if (p1.IsPunching() != true) 
-				{
-					p1.ChangeDirc(1);
-					p1.Move(); 
-					
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-               
-                break;
-            case FSKEY_D: // move right
-				// if punching, cannot move
-				if (p1.IsPunching() != true)
-				{
-					p1.ChangeDirc(0);
 					p1.Move();
-					
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
 				}
-                break;
-
-            case FSKEY_S: // punch
-				// if not punching, punch 
-				if (p1.IsPunching() != true)
+				else if (p1.getLeftBanMoveBoundary() >= p2.getRightBanMoveBoundary() )
 				{
-					p1.InitializePunching();
-					/* if punch, play punch sound */
-					player.Stop(punch);
-					player.PlayOneShot(punch);
+					p1.Move();
 				}
-                break;
-
-				// player 2 moves
-            case FSKEY_I: // jump
-				// if not jumping, jump
-				if (p2.IsJumping() != true)
+				else if ( p1.getLeftBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
 				{
-					p2.InitializeJumping();
-					/* play move sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
+					p1.Move();
 				}
-				break;
 
-            case FSKEY_J: // move left
-				if (p2.IsPunching() != true)
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+
+			break;
+		case FSKEY_D: // move right
+			// if punching, cannot move
+			if (p1.IsPunching() != true)
+			{
+				p1.ChangeDirc(0);
+				if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
 				{
-					p2.ChangeDirc(1);
+					p1.Move();
+				}
+				else if (p1.getRightBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				else if (p1.getRightBanMoveBoundary() >= p2.getRightBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_S: // punch
+			// if not punching, punch 
+			if (p1.IsPunching() != true)
+			{
+				p1.InitializePunching();
+				/* if punch, play punch sound */
+				player.Stop(punch);
+				player.PlayOneShot(punch);
+			}
+			break;
+
+			// player 2 moves
+		case FSKEY_I: // jump
+			// if not jumping, jump
+			if (p2.IsJumping() != true)
+			{
+				p2.InitializeJumping();
+				/* play move sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_J: // move left
+			if (p2.IsPunching() != true)
+			{
+				p2.ChangeDirc(1);
+				if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+				{
 					p2.Move();
-					// if punching, cannot move
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
 				}
-				break;
-
-            case FSKEY_L: // move right
+				else if (p2.getLeftBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				else if (p2.getLeftBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				//p2.Move();
 				// if punching, cannot move
-				if (p2.IsPunching() != true)
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_L: // move right
+			// if punching, cannot move
+			if (p2.IsPunching() != true)
+			{
+				p2.ChangeDirc(0);
+				if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
 				{
-					p2.ChangeDirc(0);
 					p2.Move();
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
 				}
-				break;
-
-            case FSKEY_K: // punch
-				// if not punching, punch 
-				if (p2.IsPunching() != true)
+				else if (p2.getRightBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
 				{
-					p2.InitializePunching();
-					/* if punch, play punch sound */
-					player.Stop(punch);
-					player.PlayOneShot(punch);
+					p2.Move();
 				}
-				break;
+				else if (p2.getRightBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				p2.Move();
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
 
-				// music functions 
-				/* press Key B to play background music*/
-			case FSKEY_B:
-				player.PlayBackground(backgnd);
-				break;
+		case FSKEY_K: // punch
+			// if not punching, punch 
+			if (p2.IsPunching() != true)
+			{
+				p2.InitializePunching();
+				/* if punch, play punch sound */
+				player.Stop(punch);
+				player.PlayOneShot(punch);
+			}
+			break;
 
-				/* press key P to stop background music*/
-			case FSKEY_P:
-				player.Stop(backgnd);
-				break;
-        }
+			// music functions 
+			/* press Key B to play background music*/
+		case FSKEY_B:
+			player.PlayBackground(backgnd);
+			break;
+
+			/* press key P to stop background music*/
+		case FSKEY_P:
+			player.Stop(backgnd);
+			break;
+		}
+
 
 		// player motions and logic behind interactions  
         // player 1 punching
