@@ -152,7 +152,14 @@ void Game::Run(){
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 	while (termination == 0) {
-		FsPollDevice();
+        timer.tictoc();
+        decade = (int)(timer.sum + 1) / 10;
+        unit = (int)(timer.sum + 1) - decade * 10;
+        if (decade == 0 && unit == 0) {
+            termination = 1;
+            setTimeout();
+        }
+        FsPollDevice();
 		int key = FsInkey();
 		switch (key) {
 		case FSKEY_ESC: // exit the game
