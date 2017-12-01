@@ -171,7 +171,19 @@ void Game::Run(){
 			if (p1.IsPunching() != true)
 			{
 				p1.ChangeDirc(1);
-				p1.Move();
+
+				if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				else if (p1.getLeftBanMoveBoundary() >= p2.getRightBanMoveBoundary() )
+				{
+					p1.Move();
+				}
+				else if ( p1.getLeftBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+				{
+					p1.Move();
+				}
 
 				/* if moved, play running sound */
 				player.Stop(running);
@@ -184,8 +196,18 @@ void Game::Run(){
 			if (p1.IsPunching() != true)
 			{
 				p1.ChangeDirc(0);
-				p1.Move();
-
+				if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				else if (p1.getRightBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				else if (p1.getRightBanMoveBoundary() >= p2.getRightBanMoveBoundary())
+				{
+					p1.Move();
+				}
 				/* if moved, play running sound */
 				player.Stop(running);
 				player.PlayOneShot(running);
@@ -219,7 +241,19 @@ void Game::Run(){
 			if (p2.IsPunching() != true)
 			{
 				p2.ChangeDirc(1);
-				p2.Move();
+				if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				else if (p2.getLeftBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				else if (p2.getLeftBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				//p2.Move();
 				// if punching, cannot move
 				/* if moved, play running sound */
 				player.Stop(running);
@@ -232,6 +266,18 @@ void Game::Run(){
 			if (p2.IsPunching() != true)
 			{
 				p2.ChangeDirc(0);
+				if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				else if (p2.getRightBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				else if (p2.getRightBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+				{
+					p2.Move();
+				}
 				p2.Move();
 				/* if moved, play running sound */
 				player.Stop(running);

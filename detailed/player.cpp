@@ -5,6 +5,7 @@
 #include "fssimplewindow.h"
 
 #include "player.h"
+#include "header.h"
 
 void drawhead(double x,double y, int facialstate);
 void drawneck(double x, double y);
@@ -89,38 +90,38 @@ int Player::getRightBoundary(){
 
 /////get the BanMoveBoundary
 int Player::getLeftBanMoveBoundary() {
-	return x - 200;
+	return x - 110;
 }
 
 int Player::getRightBanMoveBoundary() {
-	return x + 200;
+	return x + 110;
 }
 
 int Player::getUpperBanMoveBoundary() {
-	return y - 100;
+	return y - neckl-2*headr;
 }
 
 int Player::getLowerBanMoveBoundary() {
-	return y + 200;
+	return y + bodyl + 2*legl;
 }
 
-void Player::Move(Player &opponent){
+void Player::Move(){
 
-	int vtemp = vx;
-	//When player is on the left
-	if (getLeftBanMoveBoundary() <=opponent.getRightBanMoveBoundary()&& x > opponent.getLeftBanMoveBoundary() && getUpperBanMoveBoundary()<=opponent.getLowerBanMoveBoundary() && getLowerBanMoveBoundary() >= opponent.getUpperBanMoveBoundary())
-	{
-		vx = 0;
-	}
+
+	//if (getLeftBanMoveBoundary() <=opponent.getRightBanMoveBoundary() && getRightBanMoveBoundary()  > opponent.getLeftBanMoveBoundary() && getUpperBanMoveBoundary()<=opponent.getLowerBanMoveBoundary() && getLowerBanMoveBoundary() >= opponent.getUpperBanMoveBoundary())
+
 
     if (direction == 1){
 		x -= vx * dt;
+		
     }
     else{
 		x += vx * dt;
+	
     }
     walkState = 1;
-	vx = vtemp;
+
+
 }
 
 void Player::ResetWalkState(){

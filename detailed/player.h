@@ -38,7 +38,7 @@ public:
 			4. being punched
 	*/
 
-	void Move(Player &opponent); // change x according to character's speed
+	void Move(); // change x according to character's speed
 	void ResetWalkState();
 	
     void ChangeDirc(bool dirc);  // change direction
