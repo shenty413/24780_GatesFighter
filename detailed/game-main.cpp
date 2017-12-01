@@ -5,7 +5,7 @@
 
 #include "game-menu.h"
 #include "game.h"
-
+#pragma warning(disable: 4996)
 
 
 int main(void)
