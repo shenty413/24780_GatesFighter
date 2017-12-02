@@ -288,7 +288,7 @@ void Game::Run(){
                     else if (p1.getLeftBanMoveBoundary() > p2.getRightBanMoveBoundary() )
                     {
                         p1.Move();
-						if (p1.getLeftBanMoveBoundary() > p2.getRightBanMoveBoundary())
+						if (p1.getLeftBanMoveBoundary() < p2.getRightBanMoveBoundary())
 						{
 							p1.setX(p2.getRightBanMoveBoundary())  ;
 						}
@@ -394,7 +394,7 @@ void Game::Run(){
                     else if (p2.getRightBanMoveBoundary() < p1.getLeftBanMoveBoundary())
                     {
                         p2.Move();
-						if (p2.getRightBanMoveBoundary() < p1.getLeftBanMoveBoundary())
+						if (p2.getRightBanMoveBoundary() > p1.getLeftBanMoveBoundary())
 						{
 							p2.setX(p1.getLeftBanMoveBoundary());
 						}
