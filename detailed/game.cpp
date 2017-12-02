@@ -56,6 +56,8 @@ void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
 void Game::SetCharacter(int pn1, int pn2){
     p1.SetCharacter(pn1);
     p2.SetCharacter(pn2);
+    p1.body.SetPic(pn1);
+    p2.body.SetPic(pn2);
 }
 
 const bool Game::isExit(void) const {
@@ -341,7 +343,7 @@ void Game::Run(){
         // player 1 punching
         if (p1.IsPunching())
         {
-            printf("p1 is punching");
+            //printf("p1 is punching");
             p1.Punch();
 
 			if (p1.IfPunchHit(p2) && p2.GetHitState() != true)
@@ -368,7 +370,7 @@ void Game::Run(){
         // player 2 punching
         if (p2.IsPunching())
         {
-            printf("p2 is punching");
+            //printf("p2 is punching");
 			p2.Punch();
 
 			if (p2.IfPunchHit(p1) && p1.GetHitState() != true)

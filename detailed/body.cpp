@@ -2,8 +2,131 @@
 #include <math.h>
 #include "fssimplewindow.h"
 #include "header.h"
+#include <string>
 
-void Body::DrawHead(double x,double y, int facialstate) const{
+void Body::SetPic(int index){
+    std::string fileName[6];
+    switch (index) {
+        case 1:
+            fileName[0] = "player1left.png";
+            fileName[1] = "player1right.png";
+            fileName[2] = "player1bpl.png";
+            fileName[3] = "player1bpr.png";
+            fileName[4] = "player1punch.png";
+            fileName[5] = "palyer1jump.png";
+            break;
+        case 2:
+            fileName[0] = "player2left.png";
+            fileName[1] = "player2right.png";
+            fileName[2] = "player2bpl.png";
+            fileName[3] = "player2bpr.png";
+            fileName[4] = "player2punch.png";
+            fileName[5] = "palyer2jump.png";
+            break;
+        case 3:
+            fileName[0] = "player3left.png";
+            fileName[1] = "player3right.png";
+            fileName[2] = "player3bpl.png";
+            fileName[3] = "player3bpr.png";
+            fileName[4] = "player3punch.png";
+            fileName[5] = "palyer3jump.png";
+            break;
+        case 4:
+            fileName[0] = "player4left.png";
+            fileName[1] = "player4right.png";
+            fileName[2] = "player4bpl.png";
+            fileName[3] = "player4bpr.png";
+            fileName[4] = "player4punch.png";
+            fileName[5] = "palyer4jump.png";
+            break;
+        default:
+            break;
+    }
+    
+    if(YSOK == leftpng.Decode(fileName[0].c_str()))
+    {
+        leftpng.Flip();
+        printf("%dx%d\n",leftpng.wid,leftpng.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+    
+    if(YSOK == rightpng.Decode(fileName[1].c_str()))
+    {
+        rightpng.Flip();
+        printf("%dx%d\n",rightpng.wid,rightpng.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+    
+    if(YSOK == bplpng.Decode(fileName[2].c_str()))
+    {
+        bplpng.Flip();
+        printf("%dx%d\n",bplpng.wid,bplpng.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+    
+    if(YSOK == bprpng.Decode(fileName[3].c_str()))
+    {
+        bprpng.Flip();
+        printf("%dx%d\n",bprpng.wid,bprpng.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+    
+    if(YSOK == punchpng.Decode(fileName[4].c_str()))
+    {
+        punchpng.Flip();
+        printf("%dx%d\n",punchpng.wid,punchpng.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+    
+    if(YSOK == jumppng.Decode(fileName[5].c_str()))
+    {
+        jumppng.Flip();
+        printf("%dx%d\n",jumppng.wid,jumppng.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+}
+
+void Body::DrawHead(double x,double y, int facialstate, int IsHit) const{
+    glRasterPos2i(x-50,y-15);
+    
+    
+    if (IsHit){
+        if (facialstate){
+            glDrawPixels(bplpng.wid,bplpng.hei,GL_RGBA,GL_UNSIGNED_BYTE,bplpng.rgba);
+            
+        }else{
+            glDrawPixels(bprpng.wid,bprpng.hei,GL_RGBA,GL_UNSIGNED_BYTE,bprpng.rgba);
+        }
+        return;
+    }
+    
+    if (facialstate){
+        glDrawPixels(leftpng.wid,leftpng.hei,GL_RGBA,GL_UNSIGNED_BYTE,leftpng.rgba);
+        
+    }else{
+        glDrawPixels(rightpng.wid,rightpng.hei,GL_RGBA,GL_UNSIGNED_BYTE,rightpng.rgba);
+    }
+}
+    
+    /*
 	glColor3ub(0, 0, 0);
 	//glBegin(GL_TRIANGLE_FAN);
 	glBegin(GL_LINES);
@@ -67,8 +190,8 @@ void Body::DrawHead(double x,double y, int facialstate) const{
 		glVertex2d(x - g*headr / 9, y - (headr + neckl) + headr / 4);
 		glVertex2d(x + g*headr / 7 + g*0.4*headr, y - (headr + neckl) + headr / 4);
 		glEnd();
-}
-
+     */
+    
 void Body::DrawNeck (double x, double y) const
 {
 	glColor3ub(0, 0, 0);

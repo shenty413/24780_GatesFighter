@@ -60,18 +60,22 @@ void Player::SetCharacter(int charNo){
         case 1:
             attack = 5;
             vx = 500;
+			back = 50;
             break;
         case 2:
             attack = 10;
             vx = 3000;
+			back = 50;
             break;
         case 3:
             attack = 20;
             vx = 1000;
+			back = 200;
             break;
         case 4:
             attack = 30;
             vx = 100;
+			back = 400;
             break;
     }
 }
@@ -82,22 +86,28 @@ int Player::getAttack(){
 }
 
 int Player::getLeftBoundary(){
-    return x - 100;
+    return x - 60;
 }
 
 int Player::getRightBoundary(){
-    return x + 100;
+    return x + 60;
 }
 
+int Player::getUpperBoundary() {
+	return y - neckl - 2 * headr;
+}
 
+int Player::getLowerBoundary() {
+	return y + bodyl + 2 * legl;
+}
 
 /////get the BanMoveBoundary
 int Player::getLeftBanMoveBoundary() {
-	return x - 110;
+	return x - 90;
 }
 
 int Player::getRightBanMoveBoundary() {
-	return x + 110;
+	return x + 90;
 }
 
 int Player::getUpperBanMoveBoundary() {
@@ -118,7 +128,10 @@ int Player::getY() const
 	return y;
 }
 
-
+void Player::setX(int back)
+{
+	x=x + back;
+}
 
 void Player::Move(){
 
@@ -165,7 +178,7 @@ bool Player::IsJumping(void){
 void Player::Jump(void){
     y += vy * dt;
     vy += ay * dt;
-    printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
+    // printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
 }
 
 void Player::CheckHitGround(void){
@@ -181,6 +194,10 @@ void Player::InitializePunching(void){
     punchState = 1;
 }
 
+
+
+
+
 bool Player::IsPunching(void){
     if (punchState == 1){
         return true;
@@ -194,20 +211,23 @@ void Player::Punch(void){
 
 bool Player::IfPunchHit(Player &opponent){
     int armLength = 300*0.5;
-    printf("Left Boundry: %d\n", opponent.getLeftBoundary());
+
+    /*printf("Left Boundry: %d\n", opponent.getLeftBoundary());
     printf("Right Boundry: %d\n", opponent.getRightBoundary());
     printf("x: %d\n", x);
     printf("left punch point: %d\n",x - armLength);
-    printf("right punch point: %d\n",x + armLength);
+    printf("right punch point: %d\n",x + armLength);*/
     if (direction){ // facing left
-        if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()){
+        if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()&& y>=opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
             printf("Is hit from left!");
+			opponent.setX(-1*back);
             return true;
         }
     }
     if (!direction){ // facing right
-        if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary()){
+        if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary() && y >= opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
             printf("Is hit from Right!");
+			opponent.setX(back);
             return true;
         }
     }
@@ -220,6 +240,7 @@ void Player::ChangeHitState(){
     }else{
         IsHit = 1;
     }
+    printf("%i",IsHit);
 }
 
 int Player::GetHitState(){
@@ -238,16 +259,22 @@ int Player::GetHP(void) {
 void Player::Draw(Player &opponent){
     // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);
     if (punchState == 1){
-        if (T < 5 && (T == 0 || T - Ttemp > 0)){
+        if (T < 4 && (T == 0 || T - Ttemp > 0))
+        {
             Ttemp = T;
             T++;
             if(T==4)
             {
-                opponent.ChangeHitState();
+                
             }
-        }else{
+        }
+        else{
             T--;
             if (T == 0){
+                if (opponent.IsHit){
+                    opponent.ChangeHitState();
+//                    /printf("is hit\n");
+                }
                 punchState = 0;
             }
         }
@@ -257,7 +284,7 @@ void Player::Draw(Player &opponent){
     
 
     // draw left and right boundary
-    // /*
+     /*
     glColor3ub(0, 0, 0);
     //glBegin(GL_TRIANGLE_FAN);
     glBegin(GL_LINES);
@@ -266,7 +293,7 @@ void Player::Draw(Player &opponent){
     glVertex2d(getLeftBoundary(),0);
     glVertex2d(getLeftBoundary(),600);    
     glEnd();
-    // */
+     */
 
 
 
@@ -279,7 +306,7 @@ void Player::Draw(Player &opponent){
     leg.DrawRightLeg(jumpState);
     leg.DrawLeftLeg(jumpState);
 
-    body.DrawHead(x, y, direction);
+    body.DrawHead(x, y, direction, IsHit);
     body.DrawNeck(x, y);
     body.DrawBody(x, y);
 }
