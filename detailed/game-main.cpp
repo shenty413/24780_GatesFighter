@@ -18,6 +18,7 @@ int main(void)
 	{
 		GameMenu menu;
 		// menu.End();
+
 		menu.RunGameMenu();
 		if(FSKEY_ESC==menu.key)
 		{
@@ -39,6 +40,7 @@ int main(void)
 				{
 					printf("Player 2 has chosen %d\n", character2);
                     Game game;
+                    // game.End();
                     game.SetCharacter(character1, character2); // Set choosen character
                     //FsCloseWindow();
                     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -56,19 +58,22 @@ int main(void)
                         // break;
                         // printf("%d\n", game.getWinner());
                         // game.getWinner();
-                        menu.End(game.getWinner());
+                        // menu.End(game.getWinner());
+                        game.End();
                     }
 					if (game.isTimeout()) {
 						// break;
 						// printf("%d\n", game.getWinner());
 						// game.getWinner();
-						menu.End(game.getWinner());
+						// menu.End(game.getWinner());
+						game.End();
 					}
 					if (game.isKo()) {
 						// break;
 						// printf("%d\n", game.getWinner());
 						// game.getWinner();
-						menu.End(game.getWinner());
+						// menu.End(game.getWinner());
+						game.End();
 					}
 				}
 			}

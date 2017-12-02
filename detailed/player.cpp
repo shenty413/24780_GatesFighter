@@ -58,7 +58,7 @@ Player::Player(int No){
 void Player::SetCharacter(int charNo){
     switch (charNo) {
         case 1:
-            attack = 5;
+            attack = 105;
             vx = 500;
 			back = 50;
             break;
@@ -249,6 +249,10 @@ int Player::GetHitState(){
 
 void Player::HPchange(const int amount){
     hp -= amount;
+    if (hp<=0)
+    {
+        hp = 0;
+    }
     printf("HP: %d\n",hp);
 }
 

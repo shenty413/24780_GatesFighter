@@ -6,6 +6,7 @@
 #include "yssimplesound.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "fssimplewindow.h"
 #include "ysglfontdata.h"
 #include "time.h"
@@ -52,6 +53,71 @@ void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
     }
     printf("Wav file reading successful.\n");
 }
+
+// void DrawCircle(int cx,int cy,int rad)
+// {
+//     const double pi=3.14159265;
+//     glColor3ub(0,0,0);
+//     glBegin(GL_LINE_LOOP);
+
+//     for(int a=0; a<64; ++a)
+//     {
+//         double radian=(double)a*2.0*pi/64.0;
+//         double c=cos(radian);
+//         double s=sin(radian);
+
+//         double x=(double)cx+c*(double)rad;
+//         double y=(double)cy+s*(double)rad;
+
+//         glVertex2d(x,y);
+//     }
+
+//     glEnd();
+// }
+
+// void DrawKneel(int xc,int yc)
+// {
+//     // int x[13],y[13];
+//     int x[13]={10,14,14,25,46,38,24,24,34,34,45,44,55};
+//     int y[13]={27,16,5,26,20,10,13,9,5,2,0,11,7};
+
+//     for (int i = 0; i < 13; ++i)
+//     {
+//         x[i]*=5;
+//         y[i]*=5;
+//     }
+//     // DrawCircle(xc+x[0],yc-y[0],10*5);
+//     glColor3ub(0,0,0);
+//     glBegin(GL_LINE_LOOP);
+//     glVertex2i(xc+x[1],yc-y[1]);
+//     glVertex2i(xc+x[3],yc-y[3]);
+//     glVertex2i(xc+x[4],yc-y[4]);
+//     glVertex2i(xc+x[5],yc-y[5]);
+//     // glVertex2i(xc+x[1],yc-y[1]);
+//     glEnd();
+//     glBegin(GL_LINES);
+//     glVertex2i(xc+x[1],yc-y[1]);
+//     glVertex2i(xc+x[2],yc-y[2]);
+//     glEnd();
+//     glBegin(GL_LINES);
+//     glVertex2i(xc+x[6],yc-y[6]);
+//     glVertex2i(xc+x[7],yc-y[7]);
+//     glEnd();
+//     glBegin(GL_LINES);
+//     glVertex2i(xc+x[5],yc-y[5]);
+//     glVertex2i(xc+x[8],yc-y[8]);
+//     glVertex2i(xc+x[8],yc-y[8]);
+//     glVertex2i(xc+x[9],yc-y[9]);
+//     glVertex2i(xc+x[9],yc-y[9]);
+//     glVertex2i(xc+x[10],yc-y[10]);
+//     glEnd();
+//     glBegin(GL_LINES);
+//     glVertex2i(xc+x[4],yc-y[4]);
+//     glVertex2i(xc+x[11],yc-y[11]);
+//     glVertex2i(xc+x[11],yc-y[11]);
+//     glVertex2i(xc+x[12],yc-y[12]);
+//     glEnd();
+// }
 
 void Game::SetCharacter(int pn1, int pn2){
     p1.SetCharacter(pn1);
@@ -144,6 +210,19 @@ void Game::DrawHpBar(int hp1, int hp2) {
 
 int Game::getWinner(void){
     return winner;
+}
+
+void Game::setLastDecade(int decade){
+    lastDecade = decade;
+}
+void Game::setLastUnit(int unit){
+    lastUnit = unit;
+}
+int Game::getLastDecade(void){
+    return lastDecade;
+}
+int Game::getLastUnit(void){
+    return lastUnit;
 }
 
 void Game::Run(){
@@ -427,6 +506,8 @@ void Game::Run(){
         // draw hp bars 
         DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
         DrawTimer(decade, unit);
+        setLastDecade(decade);
+        setLastUnit(unit);
         FsSwapBuffers();
         FsSleep(10);
         
@@ -451,4 +532,135 @@ void Game::Run(){
         // printf("test\n");
     }
     
+}
+
+void Game::End(void){
+    // printf("here\n");
+    for(;;)
+    {
+        FsPollDevice();
+        int key=FsInkey();
+        
+        if(FSKEY_ESC==key)
+        {
+            return;
+        }
+
+        glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+
+        glColor3ub(255,0,0);
+        glRasterPos2i(300,200);
+        // YsGlDrawFontBitmap32x48("GAME OVER");
+        // glRasterPos2i(100,240);
+        int xc_lose = 500;
+        int yc_lose = 500;
+        if(winner==1)
+        {
+            YsGlDrawFontBitmap32x48("PLAYER 1 WINS !");
+            xc_lose = p2.getX()-24*5;
+            yc_lose = p2.getY()+13*5;
+        }else if(winner==2)
+        {
+            YsGlDrawFontBitmap32x48("PLAYER 2 WINS !");
+            xc_lose = p1.getX()-24*5;
+            yc_lose = p1.getY()+13*5;
+        }
+        
+        // glRasterPos2i(100,240);
+        // YsGlDrawFontBitmap20x32("S......START");
+        // glRasterPos2i(100,280);
+        // YsGlDrawFontBitmap20x32("H......HELP");
+        // glRasterPos2i(100,320);
+        // YsGlDrawFontBitmap20x32("ESC....CLOSE"); 
+
+
+    // int x[13],y[13];
+        int x[13]={10,14,14,25,46,38,24,24,34,34,45,44,55};
+        // printf("winner=%d,x1=%d,p2=%d\n",winner, p1.getX(), p2.getX());
+        // if((winner==1 && p2.getX()>p1.getX()) || (winner==2 && p1.getX()>p2.getX()))
+        // {
+        //     // face left
+        // }else 
+        if((winner==1 && p2.getX()<p1.getX()) || (winner==2 && p1.getX()<p2.getX()))
+        {
+            for (int i = 0; i < 13; ++i)
+            {
+                x[i]=48-x[i]; // face right
+            }
+            // x[13]={38,32,32,23,2,10,24,24,14,14,3,4,-7};
+        }
+    
+    int y[13]={27,16,5,26,20,10,13,9,5,2,0,11,7};
+
+    for (int i = 0; i < 13; ++i)
+    {
+        x[i]*=5;
+        y[i]*=5;
+        y[i]-=100;
+    }
+    // DrawCircle(xc+x[0],yc-y[0],10*5);
+    // int xc=500;
+    // int yc=500;
+    int rad=10*5;
+
+
+    const double pi=3.14159265;
+    glColor3ub(0,0,0);
+    glBegin(GL_LINE_LOOP);
+
+    for(int a=0; a<64; ++a)
+    {
+        double radian=(double)a*2.0*pi/64.0;
+        double c=cos(radian);
+        double s=sin(radian);
+
+        double xx=(double)(xc_lose+x[0])+c*(double)rad;
+        double yy=(double)(yc_lose-y[0])+s*(double)rad;
+
+        glVertex2d(xx,yy);
+    }
+
+    glEnd();
+
+
+    glColor3ub(0,0,0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(xc_lose+x[1],yc_lose-y[1]);
+    glVertex2i(xc_lose+x[3],yc_lose-y[3]);
+    glVertex2i(xc_lose+x[4],yc_lose-y[4]);
+    glVertex2i(xc_lose+x[5],yc_lose-y[5]);
+    // glVertex2i(xc_lose+x[1],yc_lose-y[1]);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2i(xc_lose+x[1],yc_lose-y[1]);
+    glVertex2i(xc_lose+x[2],yc_lose-y[2]);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2i(xc_lose+x[6],yc_lose-y[6]);
+    glVertex2i(xc_lose+x[7],yc_lose-y[7]);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2i(xc_lose+x[5],yc_lose-y[5]);
+    glVertex2i(xc_lose+x[8],yc_lose-y[8]);
+    glVertex2i(xc_lose+x[8],yc_lose-y[8]);
+    glVertex2i(xc_lose+x[9],yc_lose-y[9]);
+    glVertex2i(xc_lose+x[9],yc_lose-y[9]);
+    glVertex2i(xc_lose+x[10],yc_lose-y[10]);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2i(xc_lose+x[4],yc_lose-y[4]);
+    glVertex2i(xc_lose+x[11],yc_lose-y[11]);
+    glVertex2i(xc_lose+x[11],yc_lose-y[11]);
+    glVertex2i(xc_lose+x[12],yc_lose-y[12]);
+    glEnd();
+
+
+
+        // DrawKneel(500,500);
+        DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
+        DrawTimer(getLastDecade(), getLastUnit());
+        FsSwapBuffers();
+
+        FsSleep(25);
+    }
 }

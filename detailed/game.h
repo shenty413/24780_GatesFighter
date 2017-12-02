@@ -18,7 +18,9 @@ protected:
 	bool exit = false;
 	bool timeout = false;
 	bool ko = false; 
-	int winner;
+	int winner = 0;
+	int lastDecade = 0;
+	int lastUnit = 0;
 public:
     void Run(void);
     void SetCharacter(int pn1, int pn2); // player No 1 and 2
@@ -30,6 +32,11 @@ public:
 	void setKo(void); // set ko flag
 	void DrawHpBar(int hp1, int hp2);
 	int getWinner(void);
+	void End(void);
+	void setLastDecade(int lastDecade);
+	void setLastUnit(int lastUnit);
+	int getLastDecade(void);
+	int getLastUnit(void);
 };
 
 #endif
