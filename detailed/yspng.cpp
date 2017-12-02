@@ -31,7 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "yspng.h"
 
-
+#pragma warning(disable: 4996)
 
 unsigned int YsGenericPngDecoder::verboseMode=YSFALSE;
 
