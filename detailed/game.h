@@ -7,12 +7,14 @@
 #include "arm.h"
 #include "leg.h"
 #include "HP.h"
+#include "random_boost_item.h"
 
 class Game
 {
     Player p1 {1};
     Player p2 {2};
 	HP hp_bar; 
+	Random_boost_item item; 
     // test 
 protected:
 	bool exit = false;

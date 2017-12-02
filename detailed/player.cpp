@@ -92,6 +92,16 @@ int Player::getAttack(){
     return attack;
 }
 
+void Player::setAttack(const int attack_addition) 
+{
+	attack += attack_addition;
+}
+
+void Player::setVx(const int vx_addition) 
+{
+	vx += vx_addition;
+};
+
 int Player::getLeftBoundary(){
     return x - 60;
 }
@@ -255,11 +265,14 @@ int Player::GetHitState(){
 }
 
 void Player::HPchange(const int amount){
-    hp -= amount;
+    hp += amount;
+
     if (hp<=0)
-    {
         hp = 0;
-    }
+
+	if (hp >= default_hp)
+		hp = default_hp;
+
     printf("HP: %d\n",hp);
 }
 

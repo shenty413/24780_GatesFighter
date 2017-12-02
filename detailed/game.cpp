@@ -11,6 +11,7 @@
 #include "ysglfontdata.h"
 #include "time.h"
 #include "HP.h"
+#include "random_boost_item.h"
 
 void musicplayer( YsSoundPlayer &player, YsSoundPlayer::SoundData &punch,
                  YsSoundPlayer::SoundData &moaning, YsSoundPlayer::SoundData &running,
@@ -428,7 +429,7 @@ void Game::Run(){
             if (p1.IfPunchHit(p2) && p2.GetHitState() != true)
             {
                 p2.ChangeHitState(); 
-                p2.HPchange(p1.getAttack()); 
+                p2.HPchange(-p1.getAttack()); 
                 /* if hit, play moaning sound */
                 player.Stop(moaning);
                 player.PlayOneShot(moaning);
@@ -454,7 +455,7 @@ void Game::Run(){
             if (p2.IfPunchHit(p1) && p1.GetHitState() != true)
             {
                 p1.ChangeHitState();
-                p1.HPchange(p2.getAttack());
+                p1.HPchange(-p2.getAttack());
                 /* if hit, play moaning sound */
                 player.Stop(moaning);
                 player.PlayOneShot(moaning);
@@ -468,11 +469,16 @@ void Game::Run(){
             p2.Jump();
             p2.CheckHitGround();
         }
+
+		item.CheckConsume(p1);
+		item.CheckConsume(p2);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
         
         p1.Draw(p2);
         p2.Draw(p1);
-        
+		item.Draw(); 
+		item.Update(); 
+
         // boundary 
         /*
          glColor3d(1, 0, 0);
