@@ -41,7 +41,9 @@ public:
 	int getX(void) const; 
 	int getY(void) const; 
     void backtoScreen();
-	void setX(int back);
+	void setX(int X);
+	void setXback(int back);
+
 	/*
 		The following functions are modifiers based on different moves that the players can do:
 			1. move
@@ -57,6 +59,7 @@ public:
 
 	void InitializeJumping(void); // initialize a jump
 	bool IsJumping(void); // jumpState=1, vy
+	void IsOnHead(Player &opponent); //
 	void Jump(void); // change vy, y
 	void CheckHitGround(void);
 

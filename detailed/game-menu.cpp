@@ -228,11 +228,11 @@ int GameMenu::Player1ChooseCharacter(void)
 		// glRasterPos2i(100,140);
 		// YsGlDrawFontBitmap20x32("Y......Choose your character");
 
-		DrawArrow(200*(ArrowPosition-1)+100,200,1,255,0,0);
-		DrawRectangle( 40,300,120,180); // character 1
-		DrawRectangle(240,300,120,180);
-		DrawRectangle(440,300,120,180);
-		DrawRectangle(640,300,120,180);
+		DrawArrow(200*(ArrowPosition-1)+210,200,1,255,0,0);
+		DrawRectangle(150,300,120,180); // character 1
+		DrawRectangle(350,300,120,180);
+		DrawRectangle(550,300,120,180);
+		DrawRectangle(750,300,120,180);
 
 		FsSwapBuffers();
 
@@ -282,12 +282,12 @@ int GameMenu::Player2ChooseCharacter(void)
 		// glRasterPos2i(100,140);
 		// YsGlDrawFontBitmap20x32("Y......Choose your character");
 
-		DrawArrow(200*(ArrowPosition-1)+100,200,1,0,0,255);
-		DrawRectangle( 40,300,120,180); // character 1
-		DrawRectangle(240,300,120,180);
-		DrawRectangle(440,300,120,180);
-		DrawRectangle(640,300,120,180);
-
+		DrawArrow(200*(ArrowPosition-1)+210,200,1,0,0,255);
+        DrawRectangle(150,300,120,180); // character 2
+        DrawRectangle(350,300,120,180);
+        DrawRectangle(550,300,120,180);
+        DrawRectangle(750,300,120,180);
+        
 		FsSwapBuffers();
 
 		FsSleep(25);

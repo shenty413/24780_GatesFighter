@@ -39,14 +39,14 @@ int main(void)
 				if(FSKEY_Y==menu.key)
 				{
 					printf("Player 2 has chosen %d\n", character2);
-                    Game game;
+                    Game *game = new Game;
                     // game.End();
-                    game.SetCharacter(character1, character2); // Set choosen character
+                    game->SetCharacter(character1, character2); // Set choosen character
                     //FsCloseWindow();
                     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
                     FsSleep(20);
                     //FsOpenWindow(16,16,800,600,1);
-                    game.Run(); // Start Game
+                    game->Run(); // Start Game
 					/*
 						three possible ways of ending a game:
 						1. user presses esc
@@ -54,27 +54,28 @@ int main(void)
 						3. one player k.o. the other 
 						Depending on which way the game ends, different prompts will pop up on the screen. 
 					*/
-                    if (game.isExit()){
+                    if (game->isExit()){
                         // break;
                         // printf("%d\n", game.getWinner());
                         // game.getWinner();
                         // menu.End(game.getWinner());
-                        game.End();
+                        game->End();
                     }
-					if (game.isTimeout()) {
+					if (game->isTimeout()) {
 						// break;
 						// printf("%d\n", game.getWinner());
 						// game.getWinner();
 						// menu.End(game.getWinner());
-						game.End();
+						game->End();
 					}
-					if (game.isKo()) {
+					if (game->isKo()) {
 						// break;
 						// printf("%d\n", game.getWinner());
 						// game.getWinner();
 						// menu.End(game.getWinner());
-						game.End();
+						game->End();
 					}
+                    delete game;
 				}
 			}
 		}
