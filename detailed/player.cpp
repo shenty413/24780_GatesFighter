@@ -135,7 +135,12 @@ int Player::getY() const
 	return y;
 }
 
-void Player::setX(int back)
+void Player::setX(int X)
+{
+	x = X;
+}
+
+void Player::setXback(int back)
 {
 	x=x + back;
 }
@@ -176,7 +181,7 @@ void Player::InitializeJumping(void){
 }
 
 bool Player::IsJumping(void){
-    if (jumpState == 1){
+    if (jumpState != 0){
         return true;
     }
     return false;
@@ -185,6 +190,7 @@ bool Player::IsJumping(void){
 void Player::Jump(void){
     y += vy * dt;
     vy += ay * dt;
+
     // printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
 }
 
@@ -197,12 +203,36 @@ void Player::CheckHitGround(void){
     }
 }
 
+void Player::IsOnHead(Player &opponent)
+{
+	if (jumpState==1 && getLowerBanMoveBoundary() > opponent.getUpperBanMoveBoundary() && getLeftBanMoveBoundary() < opponent.getRightBanMoveBoundary() && getRightBanMoveBoundary() > opponent.getLeftBanMoveBoundary())
+	{
+		jumpState = 0;
+		opponent.jumpState = 0;
+		y = 550;
+		opponent.y = 550;
+		vy = 0;
+		opponent.vy = 0;
+
+		srand(time(0));
+		int situation = rand() % 2;
+		if (situation == 0)
+		{
+			x = default_x;
+			opponent.x = default_x + 400;
+		}
+		if (situation == 1)
+		{
+			opponent.x = default_x;
+			x = default_x + 400;
+		}
+
+	}
+}
+
 void Player::InitializePunching(void){
     punchState = 1;
 }
-
-
-
 
 
 bool Player::IsPunching(void){
@@ -227,14 +257,14 @@ bool Player::IfPunchHit(Player &opponent){
     if (direction){ // facing left
         if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()&& y>=opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
             printf("Is hit from left!");
-			opponent.setX(-1*back);
+			opponent.setXback(-1*back);
             return true;
         }
     }
     if (!direction){ // facing right
         if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary() && y >= opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
             printf("Is hit from Right!");
-			opponent.setX(back);
+			opponent.setXback(back);
             return true;
         }
     }

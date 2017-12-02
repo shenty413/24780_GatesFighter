@@ -281,15 +281,19 @@ void Game::Run(){
                 {
                     p1.ChangeDirc(1);
                     
-                    if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
+                    if (p1.getLowerBanMoveBoundary() < p2.getUpperBanMoveBoundary())
                     {
                         p1.Move();
                     }
-                    else if (p1.getLeftBanMoveBoundary() >= p2.getRightBanMoveBoundary() )
+                    else if (p1.getLeftBanMoveBoundary() > p2.getRightBanMoveBoundary() )
                     {
                         p1.Move();
+						if (p1.getLeftBanMoveBoundary() < p2.getRightBanMoveBoundary())
+						{
+							p1.setX(p2.getRightBanMoveBoundary())  ;
+						}
                     }
-                    else if ( p1.getLeftBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+                    else if ( p1.getLeftBanMoveBoundary() < p2.getLeftBanMoveBoundary())
                     {
                         p1.Move();
                     }
@@ -305,15 +309,19 @@ void Game::Run(){
                 if (p1.IsPunching() != true)
                 {
                     p1.ChangeDirc(0);
-                    if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
+                    if (p1.getLowerBanMoveBoundary() < p2.getUpperBanMoveBoundary())
                     {
                         p1.Move();
                     }
-                    else if (p1.getRightBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+                    else if (p1.getRightBanMoveBoundary() < p2.getLeftBanMoveBoundary())
                     {
                         p1.Move();
+						if (p1.getRightBanMoveBoundary() > p2.getLeftBanMoveBoundary())
+						{
+							p1.setX(p2.getLeftBanMoveBoundary());
+						}
                     }
-                    else if (p1.getRightBanMoveBoundary() >= p2.getRightBanMoveBoundary())
+                    else if (p1.getRightBanMoveBoundary() > p2.getRightBanMoveBoundary())
                     {
                         p1.Move();
                     }
@@ -350,15 +358,19 @@ void Game::Run(){
                 if (p2.IsPunching() != true)
                 {
                     p2.ChangeDirc(1);
-                    if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+                    if (p2.getLowerBanMoveBoundary() < p1.getUpperBanMoveBoundary())
                     {
                         p2.Move();
                     }
-                    else if (p2.getLeftBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+                    else if (p2.getLeftBanMoveBoundary() > p1.getRightBanMoveBoundary())
                     {
                         p2.Move();
+						if (p2.getLeftBanMoveBoundary() < p1.getRightBanMoveBoundary())
+						{
+							p2.setX(p1.getRightBanMoveBoundary());
+						}
                     }
-                    else if (p2.getLeftBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+                    else if (p2.getLeftBanMoveBoundary() < p1.getLeftBanMoveBoundary())
                     {
                         p2.Move();
                     }
@@ -375,19 +387,23 @@ void Game::Run(){
                 if (p2.IsPunching() != true)
                 {
                     p2.ChangeDirc(0);
-                    if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+                    if (p2.getLowerBanMoveBoundary() < p1.getUpperBanMoveBoundary())
                     {
                         p2.Move();
                     }
-                    else if (p2.getRightBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+                    else if (p2.getRightBanMoveBoundary() < p1.getLeftBanMoveBoundary())
+                    {
+                        p2.Move();
+						if (p2.getRightBanMoveBoundary() > p1.getLeftBanMoveBoundary())
+						{
+							p2.setX(p1.getLeftBanMoveBoundary());
+						}
+                    }
+                    else if (p2.getRightBanMoveBoundary() > p1.getRightBanMoveBoundary())
                     {
                         p2.Move();
                     }
-                    else if (p2.getRightBanMoveBoundary() >= p1.getRightBanMoveBoundary())
-                    {
-                        p2.Move();
-                    }
-                    p2.Move();
+                    //p2.Move();
                     /* if moved, play running sound */
                     player.Stop(running);
                     player.PlayOneShot(running);
@@ -445,6 +461,11 @@ void Game::Run(){
             p1.CheckHitGround(); 
             
         }
+
+		//check p1 if he is on p2's head
+		p1.IsOnHead(p2);
+
+
         // player 2 punching
         if (p2.IsPunching())
         {
@@ -468,6 +489,9 @@ void Game::Run(){
             p2.Jump();
             p2.CheckHitGround();
         }
+
+		p2.IsOnHead(p1);
+
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
         
         p1.Draw(p2);
@@ -548,35 +572,33 @@ void Game::End(void){
         }
 
         glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+        const double pi=3.14159265;
 
         glColor3ub(255,0,0);
         glRasterPos2i(300,200);
-        // YsGlDrawFontBitmap32x48("GAME OVER");
-        // glRasterPos2i(100,240);
         int xc_lose = 500;
         int yc_lose = 500;
+        int xc_win = 200;
+        int yc_win = 600;
         if(winner==1)
         {
             YsGlDrawFontBitmap32x48("PLAYER 1 WINS !");
             xc_lose = p2.getX()-24*5;
-            yc_lose = p2.getY()+13*5;
+            yc_lose = p2.getY()+13*5-40;
+            xc_win = p1.getX()-17*5;
+            yc_win = p1.getY()+22*5+5;
         }else if(winner==2)
         {
             YsGlDrawFontBitmap32x48("PLAYER 2 WINS !");
             xc_lose = p1.getX()-24*5;
-            yc_lose = p1.getY()+13*5;
+            yc_lose = p1.getY()+13*5-40;
+            xc_win = p2.getX()-17*5;
+            yc_win = p2.getY()+22*5+5;
         }
-        
-        // glRasterPos2i(100,240);
-        // YsGlDrawFontBitmap20x32("S......START");
-        // glRasterPos2i(100,280);
-        // YsGlDrawFontBitmap20x32("H......HELP");
-        // glRasterPos2i(100,320);
-        // YsGlDrawFontBitmap20x32("ESC....CLOSE"); 
 
-
-    // int x[13],y[13];
+        // draw loser
         int x[13]={10,14,14,25,46,38,24,24,34,34,45,44,55};
+        int xw[15]={17,14,21,11,23,3,8,33,28,8,9,8,29,28,28};
         // printf("winner=%d,x1=%d,p2=%d\n",winner, p1.getX(), p2.getX());
         // if((winner==1 && p2.getX()>p1.getX()) || (winner==2 && p1.getX()>p2.getX()))
         // {
@@ -589,75 +611,138 @@ void Game::End(void){
                 x[i]=48-x[i]; // face right
             }
             // x[13]={38,32,32,23,2,10,24,24,14,14,3,4,-7};
+            for (int i = 0; i < 15; ++i)
+            {
+                xw[i]=34-xw[i];
+            }
         }
     
-    int y[13]={27,16,5,26,20,10,13,9,5,2,0,11,7};
+        int y[13]={27,16,5,26,20,10,13,9,5,2,0,11,7};
+        int yw[15]={37,39,39,29,29,21,16,22,17,11,10,1,12,11,2};
+        for (int i = 0; i < 13; ++i)
+        {
+            x[i]*=5;
+            y[i]*=5;
+            y[i]-=100;
+        }
+        for (int i = 0; i < 15; ++i)
+        {
+            xw[i]*=5;
+            yw[i]*=5;
+        }
+        // DrawCircle(xc+x[0],yc-y[0],10*5);
+        // int xc=500;
+        // int yc=500;
+        int rad=10*5; // loser head size
+        glColor3ub(0,0,0);
+        glBegin(GL_LINE_LOOP);
+        for(int a=0; a<64; ++a)
+        {
+            double radian=(double)a*2.0*pi/64.0;
+            double c=cos(radian);
+            double s=sin(radian);
 
-    for (int i = 0; i < 13; ++i)
-    {
-        x[i]*=5;
-        y[i]*=5;
-        y[i]-=100;
-    }
-    // DrawCircle(xc+x[0],yc-y[0],10*5);
-    // int xc=500;
-    // int yc=500;
-    int rad=10*5;
+            double xx=(double)(xc_lose+x[0])+c*(double)rad;
+            double yy=(double)(yc_lose-y[0])+s*(double)rad;
 
+            glVertex2d(xx,yy);
+        }
+        glEnd();
+        glBegin(GL_LINE_LOOP);
+        glVertex2i(xc_lose+x[1],yc_lose-y[1]);
+        glVertex2i(xc_lose+x[3],yc_lose-y[3]);
+        glVertex2i(xc_lose+x[4],yc_lose-y[4]);
+        glVertex2i(xc_lose+x[5],yc_lose-y[5]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_lose+x[1],yc_lose-y[1]);
+        glVertex2i(xc_lose+x[2],yc_lose-y[2]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_lose+x[6],yc_lose-y[6]);
+        glVertex2i(xc_lose+x[7],yc_lose-y[7]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_lose+x[5],yc_lose-y[5]);
+        glVertex2i(xc_lose+x[8],yc_lose-y[8]);
+        glVertex2i(xc_lose+x[8],yc_lose-y[8]);
+        glVertex2i(xc_lose+x[9],yc_lose-y[9]);
+        glVertex2i(xc_lose+x[9],yc_lose-y[9]);
+        glVertex2i(xc_lose+x[10],yc_lose-y[10]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_lose+x[4],yc_lose-y[4]);
+        glVertex2i(xc_lose+x[11],yc_lose-y[11]);
+        glVertex2i(xc_lose+x[11],yc_lose-y[11]);
+        glVertex2i(xc_lose+x[12],yc_lose-y[12]);
+        glEnd();
 
-    const double pi=3.14159265;
-    glColor3ub(0,0,0);
-    glBegin(GL_LINE_LOOP);
+        // draw winner
+        int rad1=48; //winner head size
+        int headoffset = 0;
+        glBegin(GL_LINE_LOOP);
+        for(int a=0; a<64; ++a)
+        {
+            double radian=(double)a*2.0*pi/64.0;
+            double cw=cos(radian);
+            double sw=sin(radian);
+            double xx=(double)(xc_win+xw[0])+cw*(double)rad1;
+            double yy=(double)(yc_win-yw[0])+sw*(double)rad1;
+            glVertex2d(xx+headoffset,yy);
+        }
+        glEnd();
+        int rad2=3;
+        glBegin(GL_TRIANGLE_FAN);
+        for(int a=0; a<64; ++a)
+        {
+            double radian=(double)a*2.0*pi/64.0;
+            double cw=cos(radian);
+            double sw=sin(radian);
+            double xx=(double)(xc_win+xw[1])+cw*(double)rad2;
+            double yy=(double)(yc_win-yw[1])+sw*(double)rad2;
+            glVertex2d(xx+headoffset,yy);
+        }
+        glEnd();
+        glBegin(GL_TRIANGLE_FAN);
+        for(int a=0; a<64; ++a)
+        {
+            double radian=(double)a*2.0*pi/64.0;
+            double cw=cos(radian);
+            double sw=sin(radian);
+            double xx=(double)(xc_win+xw[2])+cw*(double)rad2;
+            double yy=(double)(yc_win-yw[2])+sw*(double)rad2;
+            glVertex2d(xx+headoffset,yy);
+        }
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_win+xw[3],yc_win-yw[3]);
+        glVertex2i(xc_win+xw[5],yc_win-yw[5]);
+        glVertex2i(xc_win+xw[5],yc_win-yw[5]);
+        glVertex2i(xc_win+xw[6],yc_win-yw[6]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_win+xw[4],yc_win-yw[4]);
+        glVertex2i(xc_win+xw[7],yc_win-yw[7]);
+        glVertex2i(xc_win+xw[7],yc_win-yw[7]);
+        glVertex2i(xc_win+xw[8],yc_win-yw[8]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_win+xw[3],yc_win-yw[3]);
+        glVertex2i(xc_win+xw[9],yc_win-yw[9]);
+        glVertex2i(xc_win+xw[9],yc_win-yw[9]);
+        glVertex2i(xc_win+xw[12],yc_win-yw[12]);
+        glVertex2i(xc_win+xw[12],yc_win-yw[12]);
+        glVertex2i(xc_win+xw[4],yc_win-yw[4]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_win+xw[10],yc_win-yw[10]);
+        glVertex2i(xc_win+xw[11],yc_win-yw[11]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex2i(xc_win+xw[13],yc_win-yw[13]);
+        glVertex2i(xc_win+xw[14],yc_win-yw[14]);
+        glEnd();
 
-    for(int a=0; a<64; ++a)
-    {
-        double radian=(double)a*2.0*pi/64.0;
-        double c=cos(radian);
-        double s=sin(radian);
-
-        double xx=(double)(xc_lose+x[0])+c*(double)rad;
-        double yy=(double)(yc_lose-y[0])+s*(double)rad;
-
-        glVertex2d(xx,yy);
-    }
-
-    glEnd();
-
-
-    glColor3ub(0,0,0);
-    glBegin(GL_LINE_LOOP);
-    glVertex2i(xc_lose+x[1],yc_lose-y[1]);
-    glVertex2i(xc_lose+x[3],yc_lose-y[3]);
-    glVertex2i(xc_lose+x[4],yc_lose-y[4]);
-    glVertex2i(xc_lose+x[5],yc_lose-y[5]);
-    // glVertex2i(xc_lose+x[1],yc_lose-y[1]);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2i(xc_lose+x[1],yc_lose-y[1]);
-    glVertex2i(xc_lose+x[2],yc_lose-y[2]);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2i(xc_lose+x[6],yc_lose-y[6]);
-    glVertex2i(xc_lose+x[7],yc_lose-y[7]);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2i(xc_lose+x[5],yc_lose-y[5]);
-    glVertex2i(xc_lose+x[8],yc_lose-y[8]);
-    glVertex2i(xc_lose+x[8],yc_lose-y[8]);
-    glVertex2i(xc_lose+x[9],yc_lose-y[9]);
-    glVertex2i(xc_lose+x[9],yc_lose-y[9]);
-    glVertex2i(xc_lose+x[10],yc_lose-y[10]);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2i(xc_lose+x[4],yc_lose-y[4]);
-    glVertex2i(xc_lose+x[11],yc_lose-y[11]);
-    glVertex2i(xc_lose+x[11],yc_lose-y[11]);
-    glVertex2i(xc_lose+x[12],yc_lose-y[12]);
-    glEnd();
-
-
-
-        // DrawKneel(500,500);
         DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
         DrawTimer(getLastDecade(), getLastUnit());
         FsSwapBuffers();
