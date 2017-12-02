@@ -3,6 +3,8 @@
 #include "ysglfontdata.h"
 #include <math.h>
 #include "game-menu.h"
+#include <string>
+
 
 void DrawRectangle(int x,int y,int w,int h)
 {
@@ -102,6 +104,27 @@ void DrawKneel(int xc,int yc)
 
 void GameMenu::RunGameMenu(void)
 {
+    std::string titlefileName = "title.png";
+    std::string insfileName = "instructions.png";
+    if(YSOK == title.Decode(titlefileName.c_str()))
+    {
+        title.Flip();
+        printf("%dx%d\n",title.wid,title.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
+    
+    if(YSOK == instructions.Decode(insfileName.c_str()))
+    {
+        instructions.Flip();
+        printf("%dx%d\n",instructions.wid,instructions.hei);
+    }
+    else
+    {
+        printf("Cannot open file 1.\n");
+    }
 	for(;;)
 	{
 		FsPollDevice();
@@ -115,14 +138,19 @@ void GameMenu::RunGameMenu(void)
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
 		glColor3ub(0,255,0);
-		glRasterPos2i(100,100);
-		YsGlDrawFontBitmap32x48("GATES FIGHTER");
-		glRasterPos2i(100,240);
+		glRasterPos2i(150,300);
+        glDrawPixels(title.wid,title.hei,GL_RGBA,GL_UNSIGNED_BYTE,title.rgba);
+        
+        /*
+        glRasterPos2i(100,240);
 		YsGlDrawFontBitmap20x32("S......START");
+        
 		glRasterPos2i(100,280);
 		YsGlDrawFontBitmap20x32("H......HELP");
-		glRasterPos2i(100,320);
-		YsGlDrawFontBitmap20x32("ESC....CLOSE");	
+         */
+        
+		glRasterPos2i(250,630);
+        glDrawPixels(instructions.wid,instructions.hei,GL_RGBA,GL_UNSIGNED_BYTE,instructions.rgba);
 
 		FsSwapBuffers();
 
