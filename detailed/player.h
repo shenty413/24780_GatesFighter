@@ -10,6 +10,7 @@ protected:
 	int T, Ttemp;
 	int x,y,hp,attack,ay,vx,vy,direction,jumpState,walkState,punchState,IsHit;
 	int w1,w2,elbowAngle1,elbowAngle2;
+	int back;
     
     Arm arm;
     Leg leg;
@@ -27,6 +28,8 @@ public:
 	int getAttack();
 	int getLeftBoundary();
 	int getRightBoundary();
+	int getUpperBoundary();
+	int getLowerBoundary();
 
 	int getLowerBanMoveBoundary();
 	int getUpperBanMoveBoundary();
@@ -36,7 +39,7 @@ public:
 	int getX(void) const; 
 	int getY(void) const; 
 
-
+	void setX(int back);
 	/*
 		The following functions are modifiers based on different moves that the players can do:
 			1. move

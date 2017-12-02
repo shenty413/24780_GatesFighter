@@ -60,18 +60,22 @@ void Player::SetCharacter(int charNo){
         case 1:
             attack = 5;
             vx = 500;
+			back = 50;
             break;
         case 2:
             attack = 10;
             vx = 3000;
+			back = 50;
             break;
         case 3:
             attack = 20;
             vx = 1000;
+			back = 200;
             break;
         case 4:
             attack = 30;
             vx = 100;
+			back = 400;
             break;
     }
 }
@@ -82,22 +86,28 @@ int Player::getAttack(){
 }
 
 int Player::getLeftBoundary(){
-    return x - 100;
+    return x - 60;
 }
 
 int Player::getRightBoundary(){
-    return x + 100;
+    return x + 60;
 }
 
+int Player::getUpperBoundary() {
+	return y - neckl - 2 * headr;
+}
 
+int Player::getLowerBoundary() {
+	return y + bodyl + 2 * legl;
+}
 
 /////get the BanMoveBoundary
 int Player::getLeftBanMoveBoundary() {
-	return x - 110;
+	return x - 90;
 }
 
 int Player::getRightBanMoveBoundary() {
-	return x + 110;
+	return x + 90;
 }
 
 int Player::getUpperBanMoveBoundary() {
@@ -118,7 +128,10 @@ int Player::getY() const
 	return y;
 }
 
-
+void Player::setX(int back)
+{
+	x=x + back;
+}
 
 void Player::Move(){
 
@@ -194,20 +207,23 @@ void Player::Punch(void){
 
 bool Player::IfPunchHit(Player &opponent){
     int armLength = 300*0.5;
-    //printf("Left Boundry: %d\n", opponent.getLeftBoundary());
-    //printf("Right Boundry: %d\n", opponent.getRightBoundary());
-    //printf("x: %d\n", x);
-    //printf("left punch point: %d\n",x - armLength);
-    //printf("right punch point: %d\n",x + armLength);
+
+    /*printf("Left Boundry: %d\n", opponent.getLeftBoundary());
+    printf("Right Boundry: %d\n", opponent.getRightBoundary());
+    printf("x: %d\n", x);
+    printf("left punch point: %d\n",x - armLength);
+    printf("right punch point: %d\n",x + armLength);*/
     if (direction){ // facing left
-        if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()){
-            // printf("Is hit from left!");
+        if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()&& y>=opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
+            printf("Is hit from left!");
+			opponent.setX(-1*back);
             return true;
         }
     }
     if (!direction){ // facing right
-        if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary()){
-            //printf("Is hit from Right!");
+        if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary() && y >= opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
+            printf("Is hit from Right!");
+			opponent.setX(back);
             return true;
         }
     }
