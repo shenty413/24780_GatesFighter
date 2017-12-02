@@ -288,6 +288,7 @@ void Game::Run(){
                 /* if hit, play moaning sound */
                 player.Stop(moaning);
                 player.PlayOneShot(moaning);
+				p2.ChangeHitState();
             }
 
         }
@@ -313,6 +314,7 @@ void Game::Run(){
 				/* if hit, play moaning sound */
 				player.Stop(moaning);
 				player.PlayOneShot(moaning);
+				p1.ChangeHitState(); 
 			}
 
         }
