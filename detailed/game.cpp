@@ -151,7 +151,7 @@ void Game::Run(){
     // wait for a key stroke
 	printf("\n\n\n\nSound player?\n\n\n\n");
 	
-    YsSoundPlayer::SoundData punch,moaning,running, backgnd;
+    YsSoundPlayer::SoundData punch,moaning,running,backgnd;
     YsSoundPlayer player;
 
     musicplayer(player, punch, moaning, running, backgnd);
