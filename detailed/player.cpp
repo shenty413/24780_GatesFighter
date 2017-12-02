@@ -194,6 +194,10 @@ void Player::InitializePunching(void){
     punchState = 1;
 }
 
+
+
+
+
 bool Player::IsPunching(void){
     if (punchState == 1){
         return true;
@@ -272,7 +276,7 @@ void Player::Draw(Player &opponent){
     
 
     // draw left and right boundary
-    // /*
+     /*
     glColor3ub(0, 0, 0);
     //glBegin(GL_TRIANGLE_FAN);
     glBegin(GL_LINES);
@@ -281,7 +285,7 @@ void Player::Draw(Player &opponent){
     glVertex2d(getLeftBoundary(),0);
     glVertex2d(getLeftBoundary(),600);    
     glEnd();
-    // */
+     */
 
 
 
