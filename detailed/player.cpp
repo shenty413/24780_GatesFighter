@@ -57,7 +57,7 @@ Player::Player(int No){
 void Player::SetCharacter(int charNo){
     switch (charNo) {
         case 1:
-            attack = 105;
+            attack = 5;
             vx = 500;
 			back = 50;
             break;
