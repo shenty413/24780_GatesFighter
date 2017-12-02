@@ -26,6 +26,8 @@ public:
 
 	/* The following functions are getters of this class. */
 	int getAttack();
+	void setAttack(const int attack_addition);
+	void setVx(const int vx_addition);
 	int getLeftBoundary();
 	int getRightBoundary();
 	int getUpperBoundary();
