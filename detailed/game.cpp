@@ -430,7 +430,8 @@ void Game::Run(){
         FsSwapBuffers();
         FsSleep(10);
         
-        
+        p1.backtoScreen();
+        p2.backtoScreen();
         // termination flags 
         
         // count time, check if time runs out
