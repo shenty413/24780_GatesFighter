@@ -281,15 +281,19 @@ void Game::Run(){
                 {
                     p1.ChangeDirc(1);
                     
-                    if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
+                    if (p1.getLowerBanMoveBoundary() < p2.getUpperBanMoveBoundary())
                     {
                         p1.Move();
                     }
-                    else if (p1.getLeftBanMoveBoundary() >= p2.getRightBanMoveBoundary() )
+                    else if (p1.getLeftBanMoveBoundary() > p2.getRightBanMoveBoundary() )
                     {
                         p1.Move();
+						if (p1.getLeftBanMoveBoundary() > p2.getRightBanMoveBoundary())
+						{
+							p1.setX(p2.getRightBanMoveBoundary())  ;
+						}
                     }
-                    else if ( p1.getLeftBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+                    else if ( p1.getLeftBanMoveBoundary() < p2.getLeftBanMoveBoundary())
                     {
                         p1.Move();
                     }
@@ -305,15 +309,19 @@ void Game::Run(){
                 if (p1.IsPunching() != true)
                 {
                     p1.ChangeDirc(0);
-                    if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
+                    if (p1.getLowerBanMoveBoundary() < p2.getUpperBanMoveBoundary())
                     {
                         p1.Move();
                     }
-                    else if (p1.getRightBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+                    else if (p1.getRightBanMoveBoundary() < p2.getLeftBanMoveBoundary())
                     {
                         p1.Move();
+						if (p1.getRightBanMoveBoundary() > p2.getLeftBanMoveBoundary())
+						{
+							p1.setX(p2.getLeftBanMoveBoundary());
+						}
                     }
-                    else if (p1.getRightBanMoveBoundary() >= p2.getRightBanMoveBoundary())
+                    else if (p1.getRightBanMoveBoundary() > p2.getRightBanMoveBoundary())
                     {
                         p1.Move();
                     }
@@ -350,15 +358,19 @@ void Game::Run(){
                 if (p2.IsPunching() != true)
                 {
                     p2.ChangeDirc(1);
-                    if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+                    if (p2.getLowerBanMoveBoundary() < p1.getUpperBanMoveBoundary())
                     {
                         p2.Move();
                     }
-                    else if (p2.getLeftBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+                    else if (p2.getLeftBanMoveBoundary() > p1.getRightBanMoveBoundary())
                     {
                         p2.Move();
+						if (p2.getLeftBanMoveBoundary() < p1.getRightBanMoveBoundary())
+						{
+							p2.setX(p1.getRightBanMoveBoundary());
+						}
                     }
-                    else if (p2.getLeftBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+                    else if (p2.getLeftBanMoveBoundary() < p1.getLeftBanMoveBoundary())
                     {
                         p2.Move();
                     }
@@ -375,19 +387,23 @@ void Game::Run(){
                 if (p2.IsPunching() != true)
                 {
                     p2.ChangeDirc(0);
-                    if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+                    if (p2.getLowerBanMoveBoundary() < p1.getUpperBanMoveBoundary())
                     {
                         p2.Move();
                     }
-                    else if (p2.getRightBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+                    else if (p2.getRightBanMoveBoundary() < p1.getLeftBanMoveBoundary())
+                    {
+                        p2.Move();
+						if (p2.getRightBanMoveBoundary() < p1.getLeftBanMoveBoundary())
+						{
+							p2.setX(p1.getLeftBanMoveBoundary());
+						}
+                    }
+                    else if (p2.getRightBanMoveBoundary() > p1.getRightBanMoveBoundary())
                     {
                         p2.Move();
                     }
-                    else if (p2.getRightBanMoveBoundary() >= p1.getRightBanMoveBoundary())
-                    {
-                        p2.Move();
-                    }
-                    p2.Move();
+                    //p2.Move();
                     /* if moved, play running sound */
                     player.Stop(running);
                     player.PlayOneShot(running);
@@ -445,6 +461,11 @@ void Game::Run(){
             p1.CheckHitGround(); 
             
         }
+
+		//check p1 if he is on p2's head
+		p1.IsOnHead(p2);
+
+
         // player 2 punching
         if (p2.IsPunching())
         {
@@ -468,6 +489,9 @@ void Game::Run(){
             p2.Jump();
             p2.CheckHitGround();
         }
+
+		p2.IsOnHead(p1);
+
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
         
         p1.Draw(p2);
