@@ -10,6 +10,7 @@ protected:
 	int T, Ttemp;
 	int x,y,hp,attack,ay,vx,vy,direction,jumpState,walkState,punchState,IsHit;
 	int w1,w2,elbowAngle1,elbowAngle2;
+	int back;
     
     Arm arm;
     Leg leg;

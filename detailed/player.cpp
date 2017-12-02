@@ -60,18 +60,22 @@ void Player::SetCharacter(int charNo){
         case 1:
             attack = 5;
             vx = 500;
+			back = 50;
             break;
         case 2:
             attack = 10;
             vx = 3000;
+			back = 50;
             break;
         case 3:
             attack = 20;
             vx = 1000;
+			back = 200;
             break;
         case 4:
             attack = 30;
             vx = 100;
+			back = 400;
             break;
     }
 }
@@ -211,14 +215,14 @@ bool Player::IfPunchHit(Player &opponent){
     if (direction){ // facing left
         if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()&& y>=opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
             printf("Is hit from left!");
-			opponent.setX(-100);
+			opponent.setX(-1*back);
             return true;
         }
     }
     if (!direction){ // facing right
         if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary() && y >= opponent.getUpperBoundary() && y <= opponent.getLowerBoundary()){
             printf("Is hit from Right!");
-			opponent.setX(100);
+			opponent.setX(back);
             return true;
         }
     }
