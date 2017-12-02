@@ -15,11 +15,10 @@ void drawleftpart(double x, double y,int lpunchstate, double T);
 void drawrightleg(double x, double y,int rlegstate,int jumpornot);
 void drawleftleg(double x, double y,int llegstate,int jumpornot);
 
-
 using namespace std;
 
 const int default_x = 300;
-const int default_y = 400;
+const int default_y = 550;
 const int jumpSpeed = -1000;
 const int default_hp = 100;
 const int default_attack = 10;
@@ -80,6 +79,14 @@ void Player::SetCharacter(int charNo){
     }
 }
 
+void Player::backtoScreen () {
+    /* check which side is outofScreen */
+    if (getRightBanMoveBoundary() >= 1024) {
+        x = 1024 - 90;
+    } else if (getLeftBanMoveBoundary() <= 0) {
+        x = 0 + 90;
+    }
+}
 
 int Player::getAttack(){
     return attack;
@@ -182,10 +189,10 @@ void Player::Jump(void){
 }
 
 void Player::CheckHitGround(void){
-    if (y > 400 && jumpState){
+    if (y > 550 && jumpState){
         ay = 0;
         vy = 0;
-        y = 400;
+        y = 550;
         jumpState = 0;
     }
 }

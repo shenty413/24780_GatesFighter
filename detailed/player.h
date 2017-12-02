@@ -38,7 +38,7 @@ public:
 
 	int getX(void) const; 
 	int getY(void) const; 
-
+    void backtoScreen();
 	void setX(int back);
 	/*
 		The following functions are modifiers based on different moves that the players can do:
