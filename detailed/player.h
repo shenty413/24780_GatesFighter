@@ -13,10 +13,10 @@ protected:
     
     Arm arm;
     Leg leg;
-    Body body;
     
 public:
-	Player(void); // initialize a player
+    Body body;
+    Player(void); // initialize a player
 	Player(int No);
 	// test
 

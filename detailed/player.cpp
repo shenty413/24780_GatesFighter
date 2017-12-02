@@ -165,7 +165,7 @@ bool Player::IsJumping(void){
 void Player::Jump(void){
     y += vy * dt;
     vy += ay * dt;
-    printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
+    // printf("ay: %d, vy: %d, y: %d\n", ay, vy, y);
 }
 
 void Player::CheckHitGround(void){
@@ -194,20 +194,20 @@ void Player::Punch(void){
 
 bool Player::IfPunchHit(Player &opponent){
     int armLength = 300*0.5;
-    printf("Left Boundry: %d\n", opponent.getLeftBoundary());
-    printf("Right Boundry: %d\n", opponent.getRightBoundary());
-    printf("x: %d\n", x);
-    printf("left punch point: %d\n",x - armLength);
-    printf("right punch point: %d\n",x + armLength);
+    //printf("Left Boundry: %d\n", opponent.getLeftBoundary());
+    //printf("Right Boundry: %d\n", opponent.getRightBoundary());
+    //printf("x: %d\n", x);
+    //printf("left punch point: %d\n",x - armLength);
+    //printf("right punch point: %d\n",x + armLength);
     if (direction){ // facing left
         if (x - armLength <= opponent.getRightBoundary() && x - armLength >= opponent.getLeftBoundary()){
-            printf("Is hit from left!");
+            // printf("Is hit from left!");
             return true;
         }
     }
     if (!direction){ // facing right
         if (x + armLength >= opponent.getLeftBoundary() && x + armLength <= opponent.getRightBoundary()){
-            printf("Is hit from Right!");
+            //printf("Is hit from Right!");
             return true;
         }
     }
@@ -220,6 +220,7 @@ void Player::ChangeHitState(){
     }else{
         IsHit = 1;
     }
+    printf("%i",IsHit);
 }
 
 int Player::GetHitState(){
@@ -238,16 +239,22 @@ int Player::GetHP(void) {
 void Player::Draw(Player &opponent){
     // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);
     if (punchState == 1){
-        if (T < 5 && (T == 0 || T - Ttemp > 0)){
+        if (T < 4 && (T == 0 || T - Ttemp > 0))
+        {
             Ttemp = T;
             T++;
             if(T==4)
             {
-                opponent.ChangeHitState();
+                
             }
-        }else{
+        }
+        else{
             T--;
             if (T == 0){
+                if (opponent.IsHit){
+                    opponent.ChangeHitState();
+//                    /printf("is hit\n");
+                }
                 punchState = 0;
             }
         }
@@ -279,7 +286,7 @@ void Player::Draw(Player &opponent){
     leg.DrawRightLeg(jumpState);
     leg.DrawLeftLeg(jumpState);
 
-    body.DrawHead(x, y, direction);
+    body.DrawHead(x, y, direction, IsHit);
     body.DrawNeck(x, y);
     body.DrawBody(x, y);
 }
