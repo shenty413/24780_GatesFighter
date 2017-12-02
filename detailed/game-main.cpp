@@ -17,6 +17,7 @@ int main(void)
 	for(;;)
 	{
 		GameMenu menu;
+		// menu.End();
 		menu.RunGameMenu();
 		if(FSKEY_ESC==menu.key)
 		{
@@ -52,21 +53,30 @@ int main(void)
 						Depending on which way the game ends, different prompts will pop up on the screen. 
 					*/
                     if (game.isExit()){
-                        break;
+                        // break;
+                        // printf("%d\n", game.getWinner());
+                        // game.getWinner();
+                        menu.End(game.getWinner());
                     }
 					if (game.isTimeout()) {
-						break;
+						// break;
+						// printf("%d\n", game.getWinner());
+						// game.getWinner();
+						menu.End(game.getWinner());
 					}
 					if (game.isKo()) {
-						break;
+						// break;
+						// printf("%d\n", game.getWinner());
+						// game.getWinner();
+						menu.End(game.getWinner());
 					}
 				}
 			}
 		}
-        
-        
-        
 	}
+	// printf("end\n");
+	// menu.Player2ChooseCharacter();
+
 
 	return 0;
 }

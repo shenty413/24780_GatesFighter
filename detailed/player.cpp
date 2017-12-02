@@ -5,6 +5,7 @@
 #include "fssimplewindow.h"
 
 #include "player.h"
+#include "header.h"
 
 void drawhead(double x,double y, int facialstate);
 void drawneck(double x, double y);
@@ -75,6 +76,7 @@ void Player::SetCharacter(int charNo){
     }
 }
 
+
 int Player::getAttack(){
     return attack;
 }
@@ -85,6 +87,25 @@ int Player::getLeftBoundary(){
 
 int Player::getRightBoundary(){
     return x + 100;
+}
+
+
+
+/////get the BanMoveBoundary
+int Player::getLeftBanMoveBoundary() {
+	return x - 110;
+}
+
+int Player::getRightBanMoveBoundary() {
+	return x + 110;
+}
+
+int Player::getUpperBanMoveBoundary() {
+	return y - neckl-2*headr;
+}
+
+int Player::getLowerBanMoveBoundary() {
+	return y + bodyl + 2*legl;
 }
 
 int Player::getX() const 
@@ -98,14 +119,24 @@ int Player::getY() const
 }
 
 
+
 void Player::Move(){
+
+
+	//if (getLeftBanMoveBoundary() <=opponent.getRightBanMoveBoundary() && getRightBanMoveBoundary()  > opponent.getLeftBanMoveBoundary() && getUpperBanMoveBoundary()<=opponent.getLowerBanMoveBoundary() && getLowerBanMoveBoundary() >= opponent.getUpperBanMoveBoundary())
+
+
     if (direction == 1){
 		x -= vx * dt;
+		
     }
     else{
 		x += vx * dt;
+	
     }
     walkState = 1;
+
+
 }
 
 void Player::ResetWalkState(){
@@ -162,7 +193,7 @@ void Player::Punch(void){
 }
 
 bool Player::IfPunchHit(Player &opponent){
-    int armLength = 300;
+    int armLength = 300*0.5;
     printf("Left Boundry: %d\n", opponent.getLeftBoundary());
     printf("Right Boundry: %d\n", opponent.getRightBoundary());
     printf("x: %d\n", x);
@@ -204,12 +235,16 @@ int Player::GetHP(void) {
 	return hp;
 }
 
-void Player::Draw(){
+void Player::Draw(Player &opponent){
     // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);
     if (punchState == 1){
         if (T < 5 && (T == 0 || T - Ttemp > 0)){
             Ttemp = T;
             T++;
+            if(T==4)
+            {
+                opponent.ChangeHitState();
+            }
         }else{
             T--;
             if (T == 0){
@@ -220,6 +255,21 @@ void Player::Draw(){
     //printf("T: %d, punchState: %d\n", T, punchState);
     //printf("x: %d, y: %d", x,y);
     
+
+    // draw left and right boundary
+    // /*
+    glColor3ub(0, 0, 0);
+    //glBegin(GL_TRIANGLE_FAN);
+    glBegin(GL_LINES);
+    glVertex2d(getRightBoundary(),0);
+    glVertex2d(getRightBoundary(),600);
+    glVertex2d(getLeftBoundary(),0);
+    glVertex2d(getLeftBoundary(),600);    
+    glEnd();
+    // */
+
+
+
     arm.CalculateRightPart(x, y, direction, punchState, T);
     arm.CalculateLeftPart(x, y, direction, punchState, T);
     arm.DrawRightArm(x, y);

@@ -83,51 +83,66 @@ void Game::setKo(void) {
 }
 
 void Game::DrawHpBar(int hp1, int hp2) {
+    
+    double p1 = (double)hp1 / 100;
+    double p2 = (double)hp2 / 100;
 
-	double p1 = (double)hp1 / 100;
-	double p2 = (double)hp2 / 100;
-
-	glColor3ub(0, 255, 0);
-	glRasterPos2i(80, 100);
-	YsGlDrawFontBitmap20x32("fighter1");
-	glRasterPos2i(800, 100);
-	YsGlDrawFontBitmap20x32("fighter2");
-	/* draw HP bar of p1 */
-	glColor3ub(0, 0, 0);
-	glBegin(GL_LINE_LOOP);
-	glVertex2i(10, 20);
-	glVertex2i(10, 50);
-	glVertex2i(310, 50);
-	glVertex2i(310, 20);
-	glEnd();
-
-	/* red part */
-	glColor3ub(255, 0, 0);
-	glBegin(GL_QUADS);
-	glVertex2i(10, 20);
-	glVertex2i(10, 50);
-	glVertex2i(310 * p1, 50);
-	glVertex2i(310 * p1, 20);
-	glEnd();
-
-	/* draw HP bar of p2 */
-	glColor3ub(0, 0, 0);
-	glBegin(GL_LINE_LOOP);
-	glVertex2i(1014, 20);
-	glVertex2i(1014, 50);
-	glVertex2i(714, 50);
-	glVertex2i(714, 20);
-	glEnd();
-
-	/* draw red part */
-	glColor3ub(255, 0, 0);
-	glBegin(GL_QUADS);
-	glVertex2i(1014, 20);
-	glVertex2i(1014, 50);
-	glVertex2i(714 + 300 * (1 - p2), 50);
-	glVertex2i(714 + 300 * (1 - p2), 20);
-	glEnd();
+    if(p1>p2)
+    {
+    	winner = 1;
+    }else if(p1<p2)
+    {
+    	winner = 2;
+    }else
+    {
+    	winner = 0;
+    }
+    
+    glColor3ub(0, 255, 0);
+    glRasterPos2i(80, 100);
+    YsGlDrawFontBitmap20x32("fighter1");
+    glRasterPos2i(800, 100);
+    YsGlDrawFontBitmap20x32("fighter2");
+    /* draw HP bar of p1 */
+    glColor3ub(0, 0, 0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(10, 20);
+    glVertex2i(10, 50);
+    glVertex2i(310, 50);
+    glVertex2i(310, 20);
+    glEnd();
+    
+    /* red part */
+    glColor3ub(255, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex2i(10, 20);
+    glVertex2i(10, 50);
+    glVertex2i(310 * p1, 50);
+    glVertex2i(310 * p1, 20);
+    glEnd();
+    
+    /* draw HP bar of p2 */
+    glColor3ub(0, 0, 0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(1014, 20);
+    glVertex2i(1014, 50);
+    glVertex2i(714, 50);
+    glVertex2i(714, 20);
+    glEnd();
+    
+    /* draw red part */
+    glColor3ub(255, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex2i(1014, 20);
+    glVertex2i(1014, 50);
+    glVertex2i(714 + 300 * (1 - p2), 50);
+    glVertex2i(714 + 300 * (1 - p2), 20);
+    glEnd();
 };
+
+int Game::getWinner(void){
+	return winner;
+}
 
 void Game::Run(){
 
@@ -150,7 +165,8 @@ void Game::Run(){
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     //FsOpenWindow(16,16,800,600,1);
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    while (termination==0) {
+
+	while (termination == 0) {
         timer.tictoc();
         decade = (int)(timer.sum + 1) / 10;
         unit = (int)(timer.sum + 1) - decade * 10;
@@ -159,120 +175,167 @@ void Game::Run(){
             setTimeout();
         }
         FsPollDevice();
-        int key = FsInkey();
-        switch (key) {
-            case FSKEY_ESC: // exit the game
-                setExit();
-                termination = 1;
-                break;
-                
-                // player 1 moves
-            case FSKEY_W: // jump
-				// if not jumping, jump
-				if (p1.IsJumping()!=true) 
+		int key = FsInkey();
+		switch (key) {
+		case FSKEY_ESC: // exit the game
+			setExit();
+			termination = 1;
+			break;
+
+			// player 1 moves
+		case FSKEY_W: // jump
+			// if not jumping, jump
+			if (p1.IsJumping() != true)
+			{
+				p1.InitializeJumping();
+				/* play move sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+
+			break;
+		case FSKEY_A: // move left
+			// if punching, cannot move
+			if (p1.IsPunching() != true)
+			{
+				p1.ChangeDirc(1);
+
+				if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
 				{
-					p1.InitializeJumping(); 
-					/* play move sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-				
-                break;
-            case FSKEY_A: // move left
-				// if punching, cannot move
-				if (p1.IsPunching() != true) 
-				{
-					p1.ChangeDirc(1);
-					p1.Move(); 
-					
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
-				}
-               
-                break;
-            case FSKEY_D: // move right
-				// if punching, cannot move
-				if (p1.IsPunching() != true)
-				{
-					p1.ChangeDirc(0);
 					p1.Move();
-					
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
 				}
-                break;
-
-            case FSKEY_S: // punch
-				// if not punching, punch 
-				if (p1.IsPunching() != true)
+				else if (p1.getLeftBanMoveBoundary() >= p2.getRightBanMoveBoundary() )
 				{
-					p1.InitializePunching();
-					/* if punch, play punch sound */
-					player.Stop(punch);
-					player.PlayOneShot(punch);
+					p1.Move();
 				}
-                break;
-
-				// player 2 moves
-            case FSKEY_I: // jump
-				// if not jumping, jump
-				if (p2.IsJumping() != true)
+				else if ( p1.getLeftBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
 				{
-					p2.InitializeJumping();
-					/* play move sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
+					p1.Move();
 				}
-				break;
 
-            case FSKEY_J: // move left
-				if (p2.IsPunching() != true)
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+
+			break;
+		case FSKEY_D: // move right
+			// if punching, cannot move
+			if (p1.IsPunching() != true)
+			{
+				p1.ChangeDirc(0);
+				if (p1.getLowerBanMoveBoundary() <= p2.getUpperBanMoveBoundary())
 				{
-					p2.ChangeDirc(1);
+					p1.Move();
+				}
+				else if (p1.getRightBanMoveBoundary() <= p2.getLeftBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				else if (p1.getRightBanMoveBoundary() >= p2.getRightBanMoveBoundary())
+				{
+					p1.Move();
+				}
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_S: // punch
+			// if not punching, punch 
+			if (p1.IsPunching() != true)
+			{
+				p1.InitializePunching();
+				/* if punch, play punch sound */
+				player.Stop(punch);
+				player.PlayOneShot(punch);
+			}
+			break;
+
+			// player 2 moves
+		case FSKEY_I: // jump
+			// if not jumping, jump
+			if (p2.IsJumping() != true)
+			{
+				p2.InitializeJumping();
+				/* play move sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_J: // move left
+			if (p2.IsPunching() != true)
+			{
+				p2.ChangeDirc(1);
+				if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
+				{
 					p2.Move();
-					// if punching, cannot move
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
 				}
-				break;
-
-            case FSKEY_L: // move right
+				else if (p2.getLeftBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				else if (p2.getLeftBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				//p2.Move();
 				// if punching, cannot move
-				if (p2.IsPunching() != true)
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
+
+		case FSKEY_L: // move right
+			// if punching, cannot move
+			if (p2.IsPunching() != true)
+			{
+				p2.ChangeDirc(0);
+				if (p2.getLowerBanMoveBoundary() <= p1.getUpperBanMoveBoundary())
 				{
-					p2.ChangeDirc(0);
 					p2.Move();
-					/* if moved, play running sound */
-					player.Stop(running);
-					player.PlayOneShot(running);
 				}
-				break;
-
-            case FSKEY_K: // punch
-				// if not punching, punch 
-				if (p2.IsPunching() != true)
+				else if (p2.getRightBanMoveBoundary() <= p1.getLeftBanMoveBoundary())
 				{
-					p2.InitializePunching();
-					/* if punch, play punch sound */
-					player.Stop(punch);
-					player.PlayOneShot(punch);
+					p2.Move();
 				}
-				break;
+				else if (p2.getRightBanMoveBoundary() >= p1.getRightBanMoveBoundary())
+				{
+					p2.Move();
+				}
+				p2.Move();
+				/* if moved, play running sound */
+				player.Stop(running);
+				player.PlayOneShot(running);
+			}
+			break;
 
-				// music functions 
-				/* press Key B to play background music*/
-			case FSKEY_B:
-				player.PlayBackground(backgnd);
-				break;
+		case FSKEY_K: // punch
+			// if not punching, punch 
+			if (p2.IsPunching() != true)
+			{
+				p2.InitializePunching();
+				/* if punch, play punch sound */
+				player.Stop(punch);
+				player.PlayOneShot(punch);
+			}
+			break;
 
-				/* press key P to stop background music*/
-			case FSKEY_P:
-				player.Stop(backgnd);
-				break;
-        }
+			// music functions 
+			/* press Key B to play background music*/
+		case FSKEY_B:
+			player.PlayBackground(backgnd);
+			break;
+
+			/* press key P to stop background music*/
+		case FSKEY_P:
+			player.Stop(backgnd);
+			break;
+		}
+
 
 		// player motions and logic behind interactions  
         // player 1 punching
@@ -288,7 +351,8 @@ void Game::Run(){
                 /* if hit, play moaning sound */
                 player.Stop(moaning);
                 player.PlayOneShot(moaning);
-				p2.ChangeHitState();
+                p2.ChangeHitState(); 
+
             }
 
         }
@@ -314,7 +378,7 @@ void Game::Run(){
 				/* if hit, play moaning sound */
 				player.Stop(moaning);
 				player.PlayOneShot(moaning);
-				p1.ChangeHitState(); 
+				p1.ChangeHitState();
 			}
 
         }
@@ -326,8 +390,8 @@ void Game::Run(){
         }
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-        p1.Draw();
-        p2.Draw();
+        p1.Draw(p2);
+        p2.Draw(p1);
         
 		// boundary 
 		/*
@@ -361,6 +425,7 @@ void Game::Run(){
 
 		// draw hp bars 
 		DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
+        DrawTimer(decade, unit);
 		FsSwapBuffers();
 		FsSleep(10);
 
@@ -382,7 +447,7 @@ void Game::Run(){
 			termination = 1; 
 			setKo(); 
 		}
-		printf("test\n");
+		// printf("test\n");
     }
     
 }

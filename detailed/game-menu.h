@@ -9,6 +9,7 @@ public:
 	int Player1ChooseCharacter(void);
 	int Player2ChooseCharacter(void);
 	void Help(void);
+	void End(int No);
 };
 
 #endif
