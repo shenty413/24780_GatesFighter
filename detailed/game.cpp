@@ -291,7 +291,7 @@ void Game::Run(){
                         p1.Move();
 						if (p1.getLeftBanMoveBoundary() < p2.getRightBanMoveBoundary())
 						{
-							p1.setX(p2.getRightBanMoveBoundary())  ;
+							p1.setX(p2.getRightBanMoveBoundary()+90)  ;
 						}
                     }
                     else if ( p1.getLeftBanMoveBoundary() < p2.getLeftBanMoveBoundary())
@@ -319,7 +319,7 @@ void Game::Run(){
                         p1.Move();
 						if (p1.getRightBanMoveBoundary() > p2.getLeftBanMoveBoundary())
 						{
-							p1.setX(p2.getLeftBanMoveBoundary());
+							p1.setX(p2.getLeftBanMoveBoundary()-90);
 						}
                     }
                     else if (p1.getRightBanMoveBoundary() > p2.getRightBanMoveBoundary())
@@ -368,7 +368,7 @@ void Game::Run(){
                         p2.Move();
 						if (p2.getLeftBanMoveBoundary() < p1.getRightBanMoveBoundary())
 						{
-							p2.setX(p1.getRightBanMoveBoundary());
+							p2.setX(p1.getRightBanMoveBoundary()+90);
 						}
                     }
                     else if (p2.getLeftBanMoveBoundary() < p1.getLeftBanMoveBoundary())
@@ -397,7 +397,7 @@ void Game::Run(){
                         p2.Move();
 						if (p2.getRightBanMoveBoundary() > p1.getLeftBanMoveBoundary())
 						{
-							p2.setX(p1.getLeftBanMoveBoundary());
+							p2.setX(p1.getLeftBanMoveBoundary()-90);
 						}
                     }
                     else if (p2.getRightBanMoveBoundary() > p1.getRightBanMoveBoundary())
