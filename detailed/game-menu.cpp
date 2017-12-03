@@ -5,6 +5,17 @@
 #include "game-menu.h"
 #include <string>
 
+void GameMenu::LoadPNG(std::string fileName, YsRawPngDecoder *target){
+    if(YSOK == target->Decode(fileName.c_str()))
+    {
+        target->Flip();
+        printf("%dx%d\n",target->wid,target->hei);
+    }
+    else
+    {
+        printf("Cannot open file %s.\n", fileName.c_str());
+    }
+}
 
 void DrawRectangle(int x,int y,int w,int h)
 {
@@ -104,27 +115,8 @@ void DrawKneel(int xc,int yc)
 
 void GameMenu::RunGameMenu(void)
 {
-    std::string titlefileName = "title.png";
-    std::string insfileName = "instructions.png";
-    if(YSOK == title.Decode(titlefileName.c_str()))
-    {
-        title.Flip();
-        printf("%dx%d\n",title.wid,title.hei);
-    }
-    else
-    {
-        printf("Cannot open file 1.\n");
-    }
-    
-    if(YSOK == instructions.Decode(insfileName.c_str()))
-    {
-        instructions.Flip();
-        printf("%dx%d\n",instructions.wid,instructions.hei);
-    }
-    else
-    {
-        printf("Cannot open file 1.\n");
-    }
+    LoadPNG("title.png", &title);
+    LoadPNG("instructions.png", &instructions);
 	for(;;)
 	{
 		FsPollDevice();
@@ -217,6 +209,14 @@ void GameMenu::Help(void)
 int GameMenu::Player1ChooseCharacter(void)
 {
 	int ArrowPosition=1;
+    LoadPNG("p1select.png", &p1select);
+    LoadPNG("styCard.png", &sty);
+    LoadPNG("zwyCard.png", &zwy);
+    LoadPNG("zzhCard.png", &zzh);
+    LoadPNG("czlCard.png", &czl);
+    LoadPNG("ltyCard.png", &lty);
+
+    
 	for(;;)
 	{
 		FsPollDevice();
@@ -233,9 +233,9 @@ int GameMenu::Player1ChooseCharacter(void)
 		if(FSKEY_RIGHT==key)
 		{
 			ArrowPosition++;
-			if (ArrowPosition>=4)
+			if (ArrowPosition>=5)
 			{
-				ArrowPosition=4;
+				ArrowPosition=5;
 			}
 		}
 		if(FSKEY_LEFT==key)
@@ -249,18 +249,21 @@ int GameMenu::Player1ChooseCharacter(void)
 
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 		glColor3ub(255,0,0);
-		glRasterPos2i(100,140);
-		YsGlDrawFontBitmap20x32("Player 1: choose your character");
-		glRasterPos2i(100,170);
-		YsGlDrawFontBitmap16x20("(Press Y to enter)");
-		// glRasterPos2i(100,140);
-		// YsGlDrawFontBitmap20x32("Y......Choose your character");
-
-		DrawArrow(200*(ArrowPosition-1)+210,200,1,255,0,0);
-		DrawRectangle(150,300,120,180); // character 1
-		DrawRectangle(350,300,120,180);
-		DrawRectangle(550,300,120,180);
-		DrawRectangle(750,300,120,180);
+		glRasterPos2i(100,240);
+        glDrawPixels(p1select.wid,p1select.hei,GL_RGBA,GL_UNSIGNED_BYTE,p1select.rgba);
+        
+		DrawArrow(190*(ArrowPosition-1)+125,260,1,255,0,0);
+        
+        glRasterPos2i(40,700);
+        glDrawPixels(sty.wid,sty.hei,GL_RGBA,GL_UNSIGNED_BYTE,sty.rgba);
+        glRasterPos2i(230,700);
+        glDrawPixels(zwy.wid,zwy.hei,GL_RGBA,GL_UNSIGNED_BYTE,zwy.rgba);
+        glRasterPos2i(420,700);
+        glDrawPixels(zzh.wid,zzh.hei,GL_RGBA,GL_UNSIGNED_BYTE,zzh.rgba);
+        glRasterPos2i(610,700);
+        glDrawPixels(czl.wid,czl.hei,GL_RGBA,GL_UNSIGNED_BYTE,czl.rgba);
+        glRasterPos2i(800,700);
+        glDrawPixels(lty.wid,lty.hei,GL_RGBA,GL_UNSIGNED_BYTE,lty.rgba);
 
 		FsSwapBuffers();
 
@@ -271,6 +274,8 @@ int GameMenu::Player1ChooseCharacter(void)
 int GameMenu::Player2ChooseCharacter(void)
 {
 	int ArrowPosition=1;
+    LoadPNG("p2select.png", &p2select);
+
 	for(;;)
 	{
 		FsPollDevice();
@@ -287,9 +292,9 @@ int GameMenu::Player2ChooseCharacter(void)
 		if(FSKEY_RIGHT==key)
 		{
 			ArrowPosition++;
-			if (ArrowPosition>=4)
+			if (ArrowPosition>=5)
 			{
-				ArrowPosition=4;
+				ArrowPosition=5;
 			}
 		}
 		if(FSKEY_LEFT==key)
@@ -303,18 +308,24 @@ int GameMenu::Player2ChooseCharacter(void)
 
 		glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 		glColor3ub(0,0,255);
-		glRasterPos2i(100,140);
-		YsGlDrawFontBitmap20x32("Player 2: choose your character");
-		glRasterPos2i(100,170);
-		YsGlDrawFontBitmap16x20("(Press Y to enter)");
-		// glRasterPos2i(100,140);
-		// YsGlDrawFontBitmap20x32("Y......Choose your character");
 
-		DrawArrow(200*(ArrowPosition-1)+210,200,1,0,0,255);
-        DrawRectangle(150,300,120,180); // character 2
-        DrawRectangle(350,300,120,180);
-        DrawRectangle(550,300,120,180);
-        DrawRectangle(750,300,120,180);
+        glRasterPos2i(100,240);
+        glDrawPixels(p2select.wid,p2select.hei,GL_RGBA,GL_UNSIGNED_BYTE,p2select.rgba);
+        
+        
+        DrawArrow(190*(ArrowPosition-1)+125,260,1,255,0,0);
+        
+        glRasterPos2i(40,700);
+        glDrawPixels(sty.wid,sty.hei,GL_RGBA,GL_UNSIGNED_BYTE,sty.rgba);
+        glRasterPos2i(230,700);
+        glDrawPixels(zwy.wid,zwy.hei,GL_RGBA,GL_UNSIGNED_BYTE,zwy.rgba);
+        glRasterPos2i(420,700);
+        glDrawPixels(zzh.wid,zzh.hei,GL_RGBA,GL_UNSIGNED_BYTE,zzh.rgba);
+        glRasterPos2i(610,700);
+        glDrawPixels(czl.wid,czl.hei,GL_RGBA,GL_UNSIGNED_BYTE,czl.rgba);
+        glRasterPos2i(800,700);
+        glDrawPixels(lty.wid,lty.hei,GL_RGBA,GL_UNSIGNED_BYTE,lty.rgba);
+        
         
 		FsSwapBuffers();
 
