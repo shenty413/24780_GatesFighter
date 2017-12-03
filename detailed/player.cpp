@@ -44,7 +44,7 @@ Player::Player(int No){
     y = default_y;
     hp = default_hp;
     attack = default_attack;
-    direction = default_dir;
+    direction = (No-1)*default_dir;
     ay = 2000;
     T = 0;
     Ttemp = 0;
