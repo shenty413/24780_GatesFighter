@@ -1,0 +1,7 @@
+mkdir -p test.app/Contents/MacOS
+
+clang -c fssimplewindowobjc.m yssimplesound_macosx_objc.m
+
+clang game-main.cpp fssimplewindowcpp.cpp arm.cpp body.cpp game.cpp leg.cpp player.cpp game-menu.cpp random_boost_item.cpp ysglfontdata.cpp yssimplesound.cpp yspngenc.cpp yspng.cpp HP.cpp time.cpp yssimplesound_macosx_cpp.cpp yssimplesound_macosx_objc.o fssimplewindowobjc.o -o test.app/Contents/MacOS/exe -framework Cocoa -framework OpenGL -std=c++11 -lstdc++
+
+test.app/Contents/MacOS/exe
