@@ -58,7 +58,7 @@ void Player::SetCharacter(int charNo){
     switch (charNo) {
         case 1:
             attack = 5;
-            vx = 500;
+            vx = 1000;
 			back = 50;
             break;
         case 2:
@@ -68,12 +68,12 @@ void Player::SetCharacter(int charNo){
             break;
         case 3:
             attack = 20;
-            vx = 1000;
+            vx = 2000;
 			back = 200;
             break;
         case 4:
             attack = 30;
-            vx = 100;
+            vx = 500;
 			back = 400;
             break;
     }
@@ -185,7 +185,7 @@ void Player::ChangeDirc(bool dirc){
 
 void Player::InitializeJumping(void){
     jumpState = 1;
-    ay = 2000;
+    ay = 1000;
     // vy = -400;
     vy = jumpSpeed;
 }
