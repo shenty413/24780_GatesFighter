@@ -2,6 +2,7 @@
 #define random_boost_item_h
 
 #include "player.h"
+#include <string>
 
 class Random_boost_item 
 {
@@ -27,10 +28,16 @@ protected:
 	const int hp_boost[4] = {-5,-5,10,0};
 
 public:
+    YsRawPngDecoder item1;
+    YsRawPngDecoder item2;
+    YsRawPngDecoder item3;
+    YsRawPngDecoder item4;
+    
 	Random_boost_item(); // constructor
 	void Update(void); 
 	void Draw(); 
 	void CheckConsume(Player &player);
-	void Boost(Player &player); 
+	void Boost(Player &player);
+    void LoadPNG(std::string fileName, YsRawPngDecoder *target);
 };
 #endif 

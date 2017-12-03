@@ -3,7 +3,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fssimplewindow.h"
+#include "ysglfontdata.h"
 
+
+void Random_boost_item::LoadPNG(std::string fileName, YsRawPngDecoder *target){
+    if(YSOK == target->Decode(fileName.c_str()))
+    {
+        target->Flip();
+        printf("%dx%d\n",target->wid,target->hei);
+    }
+    else
+    {
+        printf("Cannot open file %s.\n", fileName.c_str());
+    }
+}
 
 Random_boost_item::Random_boost_item() 
 {
@@ -13,7 +26,11 @@ Random_boost_item::Random_boost_item()
 	height = width; 
 	timer = 0;
 	consumed = false; 
-	index = rand() % 4 + 1;
+	index = rand() % 4;
+    LoadPNG("item1.png", &item1);
+    LoadPNG("item2.png", &item2);
+    LoadPNG("item3.png", &item3);
+    LoadPNG("item4.png", &item4);
 }
 
 void Random_boost_item::Update(void) 
@@ -37,27 +54,50 @@ void Random_boost_item::Draw()
 	{
 		switch (index) {
 		case 0: // blue->speed up
-				glColor3ub(0, 0, 255);
-				break;
+                glRasterPos2i(x,y);
+                glDrawPixels(item1.wid,item1.hei,GL_RGBA,GL_UNSIGNED_BYTE,item1.rgba);				break;
 		case 1: // red->attack up 
-				glColor3ub(255, 0, 0);
-				break;
+                glRasterPos2i(x,y);
+                glDrawPixels(item2.wid,item2.hei,GL_RGBA,GL_UNSIGNED_BYTE,item2.rgba);				break;
 		case 2: // green->heal
-				glColor3ub(0, 255, 0);
-				break;
+                glRasterPos2i(x,y);
+                glDrawPixels(item3.wid,item3.hei,GL_RGBA,GL_UNSIGNED_BYTE,item3.rgba);
+                break;
 		case 3: // lb->attack up speed down 
-				glColor3ub(0, 255, 255);
-				break;
+                glRasterPos2i(x,y);
+                glDrawPixels(item4.wid,item4.hei,GL_RGBA,GL_UNSIGNED_BYTE,item4.rgba);				break;
 		default:
 				break;
 		}
-		glBegin(GL_QUADS);
-		glVertex2i(x, y);
-		glVertex2i(x + width, y);
-		glVertex2i(x + width, y - height);
-		glVertex2i(x, y - height);
-		glEnd();
-	}
+    }else{
+        glColor3ub(0, 0, 255);
+        switch (index) {
+            case 0: // blue->speed up
+                glRasterPos2i(x,y);
+                YsGlDrawFontBitmap16x24("Speed + 10");
+                glRasterPos2i(x,y-30);
+                YsGlDrawFontBitmap16x24("HP - 5");
+                break;
+            case 1: // red->attack up
+                glRasterPos2i(x,y);
+                YsGlDrawFontBitmap16x24("Attack + 5");
+                glRasterPos2i(x,y-30);
+                YsGlDrawFontBitmap16x24("HP - 5");
+                break;
+            case 2: // green->heal
+                glRasterPos2i(x,y);
+                YsGlDrawFontBitmap16x24("Hp + 10");
+                break;
+            case 3: // lb->attack up speed down
+                glRasterPos2i(x,y);
+                YsGlDrawFontBitmap16x24("Speed - 10");
+                glRasterPos2i(x,y-30);
+                YsGlDrawFontBitmap16x24("Attacl + 5");
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void Random_boost_item::CheckConsume(Player &player) 
