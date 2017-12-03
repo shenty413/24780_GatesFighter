@@ -76,6 +76,11 @@ void Player::SetCharacter(int charNo){
             vx = 500;
 			back = 400;
             break;
+        case 5:
+            attack = 30;
+            vx = 500;
+            back = 400;
+            break;
     }
 }
 

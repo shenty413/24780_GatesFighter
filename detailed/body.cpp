@@ -39,6 +39,14 @@ void Body::SetPic(int index){
             fileName[4] = "player4punch.png";
             fileName[5] = "palyer4jump.png";
             break;
+        case 5:
+            fileName[0] = "player5left.png";
+            fileName[1] = "player5right.png";
+            fileName[2] = "player5bpl.png";
+            fileName[3] = "player5bpr.png";
+            fileName[4] = "player5punch.png";
+            fileName[5] = "palyer5jump.png";
+            break;
         default:
             break;
     }
