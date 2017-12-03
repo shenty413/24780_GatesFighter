@@ -27,7 +27,7 @@ void Random_boost_item::Update(void)
 		timer = 0;
 		index = rand() % 4;
 		printf("index=%i\n", index);
-		consumed = false; 
+		consumed = false;
 	}
 }
 

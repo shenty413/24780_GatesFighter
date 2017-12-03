@@ -594,6 +594,14 @@ void Game::End(void){
             yc_lose = p2.getY()+13*5-40;
             xc_win = p1.getX()-17*5;
             yc_win = p1.getY()+22*5+5;
+            // printf("lose_x=%d,win_x=%d\n",xc_lose,xc_win );
+            // if(xc_lose<=0)
+            // {
+            //     xc_lose=0;
+            // }else if(xc_lose>800)
+            // {
+            //     /* code */
+            // }
         }else if(winner==2)
         {
             YsGlDrawFontBitmap32x48("PLAYER 2 WINS !");
@@ -601,6 +609,24 @@ void Game::End(void){
             yc_lose = p1.getY()+13*5-40;
             xc_win = p2.getX()-17*5;
             yc_win = p2.getY()+22*5+5;
+            // printf("lose_x=%d,win_x=%d\n",xc_lose,xc_win );
+        }
+
+        if(xc_lose<=0)
+        {
+            xc_lose=0;
+        }else if(xc_lose>780)
+        {
+            xc_lose=780;
+        }
+
+        if(xc_win<=250)
+        {
+            xc_win=250;
+        }else if(xc_win>=600)
+        {
+            xc_win=600;
+            // printf("lose_x=%d,win_x=%d\n",xc_lose,xc_win );
         }
 
         // draw loser
