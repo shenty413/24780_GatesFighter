@@ -226,6 +226,24 @@ int Game::getLastUnit(void){
     return lastUnit;
 }
 
+void Game::ExHp(Player &p1, Player &p2)
+{
+    int hp1=p1.GetHP();
+    int hp2=p2.GetHP();
+    if(exhp==0 && p1.getX()>p2.getX())
+    {
+        p1.SetHp(hp2);
+        p2.SetHp(hp1);
+        exhp=1;
+    }
+    if(exhp==1 && p1.getX()<p2.getX())
+    {
+        p1.SetHp(hp2);
+        p2.SetHp(hp1);
+        exhp=0;
+    }
+    
+}
 void Game::Run(){
     
     // wait for a key stroke
@@ -539,19 +557,20 @@ void Game::Run(){
         
         
         // hp swap mechanism
-        if (p1.getX() < p2.getX()) 
-        {
-            hp_bar.SetHP_left(p1.GetHP());
-            hp_bar.SetHP_right(p2.GetHP());
-        }
-        else 
-        {
-            hp_bar.SetHP_left(p2.GetHP());
-            hp_bar.SetHP_right(p1.GetHP());
-        }
+//        if (p1.getX() < p2.getX())
+//        {
+//            hp_bar.SetHP_left(p1.GetHP());
+//            hp_bar.SetHP_right(p2.GetHP());
+//        }
+//        else
+//        {
+//            hp_bar.SetHP_left(p2.GetHP());
+//            hp_bar.SetHP_right(p1.GetHP());
+//        }
+        ExHp(p1,p2);
         
         // draw hp bars 
-        DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
+        DrawHpBar(p1.GetHP(),p2.GetHP());
         DrawTimer(decade, unit);
         setLastDecade(decade);
         setLastUnit(unit);
@@ -792,7 +811,7 @@ void Game::End(void){
         glVertex2i(xc_win+xw[14],yc_win-yw[14]);
         glEnd();
 
-        DrawHpBar(hp_bar.GetHP_left(), hp_bar.GetHP_right());
+        DrawHpBar(p1.GetHP(),p2.GetHP());
         DrawTimer(getLastDecade(), getLastUnit());
         FsSwapBuffers();
 

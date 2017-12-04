@@ -315,6 +315,11 @@ int Player::GetHP(void) {
 	return hp;
 }
 
+void Player::SetHp(int new_hp)
+{
+    hp=new_hp;
+}
+
 void Player::Draw(Player &opponent){
     // printf("x=%d,y=%d,direction=%d,punchState=%d,time=%d\n", x, y, direction, punchState, T);
     if (punchState == 1){

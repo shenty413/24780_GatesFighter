@@ -61,14 +61,14 @@ int main(void)
                         // menu.End(game.getWinner());
                         game->End();
                     }
-					if (game->isTimeout()) {
+					else if (game->isTimeout()) {
 						// break;
 						// printf("%d\n", game.getWinner());
 						// game.getWinner();
 						// menu.End(game.getWinner());
 						game->End();
 					}
-					if (game->isKo()) {
+					else if (game->isKo()) {
 						// break;
 						// printf("%d\n", game.getWinner());
 						// game.getWinner();

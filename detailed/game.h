@@ -13,10 +13,11 @@ class Game
 {
     Player p1 {1};
     Player p2 {2};
-	HP hp_bar; 
+	HP hp_bar;
 	Random_boost_item item; 
     // test 
 protected:
+    int exhp=0;
 	bool exit = false;
 	bool timeout = false;
 	bool ko = false; 
@@ -39,6 +40,7 @@ public:
 	void setLastUnit(int lastUnit);
 	int getLastDecade(void);
 	int getLastUnit(void);
+    void ExHp(Player &p1, Player &p2);
 };
 
 #endif

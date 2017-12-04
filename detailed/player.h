@@ -72,6 +72,7 @@ public:
 	bool IfPunchHit(Player &opponent); // 
 	void ChangeHitState(); // change the isHit state of a player if he/she is hit by the opponent
 	void HPchange(const int amount);
+    void SetHp(int new_hp);
 	int GetHP(void);
 
 
